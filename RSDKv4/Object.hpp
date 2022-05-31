@@ -9,8 +9,8 @@
 #define TYPEGROUP_COUNT  (0x103)
 
 enum ObjectControlModes {
-    CONTROLMODE_NONE     = -1,
-    CONTROLMODE_NORMAL   = 0,
+    CONTROLMODE_NONE   = -1,
+    CONTROLMODE_NORMAL = 0,
 };
 
 struct TypeGroupList {
@@ -65,15 +65,15 @@ struct Entity {
 };
 
 struct NativeEntityBase {
-    void (*createPtr)(void *objPtr);
-    void (*mainPtr)(void *objPtr);
+    void (*eventCreate)(void *objPtr);
+    void (*eventMain)(void *objPtr);
     int slotID;
     int objectID;
 };
 
 struct NativeEntity {
-    void (*createPtr)(void *objPtr);
-    void (*mainPtr)(void *objPtr);
+    void (*eventCreate)(void *objPtr);
+    void (*eventMain)(void *objPtr);
     int slotID;
     int objectID;
     void *extra[0x100];
@@ -183,11 +183,11 @@ inline NativeEntity *GetNativeObject(uint objID)
 }
 
 // Custom, used for cleaning purposes
-inline void RemoveNativeObjectType(void (*objCreate)(void *objPtr), void (*objMain)(void *objPtr))
+inline void RemoveNativeObjectType(void (*eventCreate)(void *objPtr), void (*eventMain)(void *objPtr))
 {
     for (int i = nativeEntityCount - 1; i >= 0; --i) {
         NativeEntity *entity = &objectEntityBank[activeEntityList[i]];
-        if (entity->createPtr == objCreate && entity->mainPtr == objMain) {
+        if (entity->eventCreate == eventCreate && entity->eventMain == eventMain) {
             RemoveNativeObject((NativeEntityBase *)entity);
         }
     }

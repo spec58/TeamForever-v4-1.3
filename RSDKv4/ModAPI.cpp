@@ -17,7 +17,7 @@ char modScriptPaths[OBJECT_COUNT][0x40];
 byte modScriptFlags[OBJECT_COUNT];
 byte modObjCount = 0;
 
-char playerNames[PLAYER_MAX][0x20];
+char playerNames[PLAYER_COUNT][0x20];
 byte playerCount = 0;
 
 #include <filesystem>
@@ -56,13 +56,14 @@ fs::path resolvePath(fs::path given)
     return given; // might work might not!
 }
 
-void initMods()
+void InitMods()
 {
     modList.clear();
-    forceUseScripts   = forceUseScripts_Config;
-    skipStartMenu     = skipStartMenu_Config;
-    disableFocusPause = disableFocusPause_Config;
-    redirectSave      = false;
+    forceUseScripts    = forceUseScripts_Config;
+    skipStartMenu      = skipStartMenu_Config;
+    disableFocusPause  = disableFocusPause_Config;
+    redirectSave       = false;
+    Engine.forceSonic1 = false;
     sprintf(savePath, "");
 
     char modBuf[0x100];
@@ -81,7 +82,7 @@ void initMods()
                 bool active = false;
                 ModInfo info;
                 modConfig.GetBool("mods", modConfig.items[m].key, &active);
-                if (loadMod(&info, modPath.string(), modConfig.items[m].key, active))
+                if (LoadMod(&info, modPath.string(), modConfig.items[m].key, active))
                     modList.push_back(info);
             }
         }
@@ -107,22 +108,23 @@ void initMods()
                     }
 
                     if (flag) {
-                        if (loadMod(&info, modPath.string(), modDirPath.filename().string(), false))
+                        if (LoadMod(&info, modPath.string(), modDirPath.filename().string(), false))
                             modList.push_back(info);
                     }
                 }
             }
         } catch (fs::filesystem_error fe) {
-            printLog("Mods Folder Scanning Error: ");
-            printLog(fe.what());
+            PrintLog("Mods Folder Scanning Error: ");
+            PrintLog(fe.what());
         }
     }
 
-    forceUseScripts   = forceUseScripts_Config;
-    skipStartMenu     = skipStartMenu_Config;
-    disableFocusPause = disableFocusPause_Config;
+    forceUseScripts    = forceUseScripts_Config;
+    skipStartMenu      = skipStartMenu_Config;
+    disableFocusPause  = disableFocusPause_Config;
+    redirectSave       = false;
+    Engine.forceSonic1 = false;
     sprintf(savePath, "");
-    redirectSave = false;
     for (int m = 0; m < modList.size(); ++m) {
         if (!modList[m].active)
             continue;
@@ -136,12 +138,14 @@ void initMods()
             sprintf(savePath, "%s", modList[m].savePath.c_str());
             redirectSave = true;
         }
+        if (modList[m].forceSonic1)
+            Engine.forceSonic1 = true;
     }
 
     ReadSaveRAMData();
     ReadUserdata();
 }
-bool loadMod(ModInfo *info, std::string modsPath, std::string folder, bool active)
+bool LoadMod(ModInfo *info, std::string modsPath, std::string folder, bool active)
 {
     if (!info)
         return false;
@@ -191,7 +195,7 @@ bool loadMod(ModInfo *info, std::string modsPath, std::string folder, bool activ
 
         info->active = active;
 
-        scanModFolder(info);
+        ScanModFolder(info);
 
         info->useScripts = false;
         modSettings.GetBool("", "TxtScripts", &info->useScripts);
@@ -210,18 +214,23 @@ bool loadMod(ModInfo *info, std::string modsPath, std::string folder, bool activ
 
         info->redirectSave = false;
         modSettings.GetBool("", "RedirectSaveRAM", &info->redirectSave);
-        if (info->redirectSave && info->active) {
+        if (info->redirectSave) {
             char path[0x100];
             sprintf(path, "mods/%s/", folder.c_str());
             info->savePath = path;
         }
+
+        info->forceSonic1 = false;
+        modSettings.GetBool("", "ForceSonic1", &info->forceSonic1);
+        if (info->forceSonic1 && info->active)
+            Engine.forceSonic1 = true;
 
         return true;
     }
     return false;
 }
 
-void scanModFolder(ModInfo *info)
+void ScanModFolder(ModInfo *info)
 {
     if (!info)
         return;
@@ -264,7 +273,7 @@ void scanModFolder(ModInfo *info)
                             buffer[i - tokenPos] = modBuf[i] == '\\' ? '/' : modBuf[i];
                         }
 
-                        // printLog(modBuf);
+                        // PrintLog(modBuf);
                         std::string path(buffer);
                         std::string modPath(modBuf);
                         char pathLower[0x100];
@@ -278,8 +287,8 @@ void scanModFolder(ModInfo *info)
                 }
             }
         } catch (fs::filesystem_error fe) {
-            printLog("Data Folder Scanning Error: ");
-            printLog(fe.what());
+            PrintLog("Data Folder Scanning Error: ");
+            PrintLog(fe.what());
         }
     }
 
@@ -312,7 +321,7 @@ void scanModFolder(ModInfo *info)
                             buffer[i - tokenPos] = modBuf[i] == '\\' ? '/' : modBuf[i];
                         }
 
-                        // printLog(modBuf);
+                        // PrintLog(modBuf);
                         std::string path(buffer);
                         std::string modPath(modBuf);
                         char pathLower[0x100];
@@ -326,8 +335,8 @@ void scanModFolder(ModInfo *info)
                 }
             }
         } catch (fs::filesystem_error fe) {
-            printLog("Script Folder Scanning Error: ");
-            printLog(fe.what());
+            PrintLog("Script Folder Scanning Error: ");
+            PrintLog(fe.what());
         }
     }
 
@@ -360,7 +369,7 @@ void scanModFolder(ModInfo *info)
                             buffer[i - tokenPos] = modBuf[i] == '\\' ? '/' : modBuf[i];
                         }
 
-                        // printLog(modBuf);
+                        // PrintLog(modBuf);
                         std::string path(buffer);
                         std::string modPath(modBuf);
                         char pathLower[0x100];
@@ -374,13 +383,13 @@ void scanModFolder(ModInfo *info)
                 }
             }
         } catch (fs::filesystem_error fe) {
-            printLog("Bytecode Folder Scanning Error: ");
-            printLog(fe.what());
+            PrintLog("Bytecode Folder Scanning Error: ");
+            PrintLog(fe.what());
         }
     }
 }
 
-void saveMods()
+void SaveMods()
 {
     char modBuf[0x100];
     sprintf(modBuf, "%smods", modsPath);
@@ -438,11 +447,34 @@ void RefreshEngine()
 
     for (nativeEntityPos = 0; nativeEntityPos < nativeEntityCount; ++nativeEntityPos) {
         NativeEntity *entity = &objectEntityBank[activeEntityList[nativeEntityPos]];
-        entity->createPtr(entity);
+        entity->eventCreate(entity);
+    }
+
+    forceUseScripts    = forceUseScripts_Config;
+    skipStartMenu      = skipStartMenu_Config;
+    disableFocusPause  = disableFocusPause_Config;
+    redirectSave       = false;
+    Engine.forceSonic1 = false;
+    sprintf(savePath, "");
+    for (int m = 0; m < modList.size(); ++m) {
+        if (!modList[m].active)
+            continue;
+        if (modList[m].useScripts)
+            forceUseScripts = true;
+        if (modList[m].skipStartMenu)
+            skipStartMenu = true;
+        if (modList[m].disableFocusPause)
+            disableFocusPause |= modList[m].disableFocusPause;
+        if (modList[m].redirectSave) {
+            sprintf(savePath, "%s", modList[m].savePath.c_str());
+            redirectSave = true;
+        }
+        if (modList[m].forceSonic1)
+            Engine.forceSonic1 = true;
     }
 
     Engine.gameType = GAME_SONIC2;
-    if (strstr(Engine.gameWindowText, "Sonic 1")) {
+    if (strstr(Engine.gameWindowText, "Sonic 1") || Engine.forceSonic1) {
         Engine.gameType = GAME_SONIC1;
     }
 
@@ -477,27 +509,7 @@ void RefreshEngine()
         AddAchievement("Beat the Clock", "Complete the Time Attack\rmode in less than 45\rminutes");
     }
 
-    forceUseScripts   = forceUseScripts_Config;
-    skipStartMenu     = skipStartMenu_Config;
-    disableFocusPause = disableFocusPause_Config;
-    sprintf(savePath, "");
-    redirectSave = false;
-    for (int m = 0; m < modList.size(); ++m) {
-        if (!modList[m].active)
-            continue;
-        if (modList[m].useScripts)
-            forceUseScripts = true;
-        if (modList[m].skipStartMenu)
-            skipStartMenu = true;
-        if (modList[m].disableFocusPause)
-            disableFocusPause |= modList[m].disableFocusPause;
-        if (modList[m].redirectSave) {
-            sprintf(savePath, "%s", modList[m].savePath.c_str());
-            redirectSave = true;
-        }
-    }
-
-    saveMods();
+    SaveMods();
 
     ReadSaveRAMData();
     ReadUserdata();

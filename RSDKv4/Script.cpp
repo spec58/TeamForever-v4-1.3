@@ -536,115 +536,117 @@ const FunctionInfo functions[] = {
 };
 
 #if RETRO_USE_COMPILER
-AliasInfo publicAliases[ALIAS_COUNT] = { AliasInfo("true", "1"),
-                                         AliasInfo("false", "0"),
-                                         AliasInfo("FX_SCALE", "0"),
-                                         AliasInfo("FX_ROTATE", "1"),
-                                         AliasInfo("FX_ROTOZOOM", "2"),
-                                         AliasInfo("FX_INK", "3"),
-                                         AliasInfo("PRESENTATION_STAGE", "0"),
-                                         AliasInfo("REGULAR_STAGE", "1"),
-                                         AliasInfo("BONUS_STAGE", "2"),
-                                         AliasInfo("SPECIAL_STAGE", "3"),
-                                         AliasInfo("MENU_1", "0"),
-                                         AliasInfo("MENU_2", "1"),
-                                         AliasInfo("C_TOUCH", "0"),
-                                         AliasInfo("C_BOX", "1"),
-                                         AliasInfo("C_BOX2", "2"),
-                                         AliasInfo("C_PLATFORM", "3"),
-                                         AliasInfo("MAT_WORLD", "0"),
-                                         AliasInfo("MAT_VIEW", "1"),
-                                         AliasInfo("MAT_TEMP", "2"),
-                                         AliasInfo("FX_FLIP", "5"),
-                                         AliasInfo("FACING_LEFT", "1"),
-                                         AliasInfo("FACING_RIGHT", "0"),
-                                         AliasInfo("FLIP_NONE", "0"),
-                                         AliasInfo("FLIP_X", "1"),
-                                         AliasInfo("FLIP_Y", "2"),
-                                         AliasInfo("FLIP_XY", "3"),
-                                         AliasInfo("STAGE_RUNNING", "1"),
-                                         AliasInfo("STAGE_PAUSED", "2"),
-                                         AliasInfo("STAGE_FROZEN", "3"),
+AliasInfo publicAliases[ALIAS_COUNT] = {
+    AliasInfo("true", "1"),
+    AliasInfo("false", "0"),
+    AliasInfo("FX_SCALE", "0"),
+    AliasInfo("FX_ROTATE", "1"),
+    AliasInfo("FX_ROTOZOOM", "2"),
+    AliasInfo("FX_INK", "3"),
+    AliasInfo("PRESENTATION_STAGE", "0"),
+    AliasInfo("REGULAR_STAGE", "1"),
+    AliasInfo("BONUS_STAGE", "2"),
+    AliasInfo("SPECIAL_STAGE", "3"),
+    AliasInfo("MENU_1", "0"),
+    AliasInfo("MENU_2", "1"),
+    AliasInfo("C_TOUCH", "0"),
+    AliasInfo("C_BOX", "1"),
+    AliasInfo("C_BOX2", "2"),
+    AliasInfo("C_PLATFORM", "3"),
+    AliasInfo("MAT_WORLD", "0"),
+    AliasInfo("MAT_VIEW", "1"),
+    AliasInfo("MAT_TEMP", "2"),
+    AliasInfo("FX_FLIP", "5"),
+    AliasInfo("FACING_LEFT", "1"),
+    AliasInfo("FACING_RIGHT", "0"),
+    AliasInfo("FLIP_NONE", "0"),
+    AliasInfo("FLIP_X", "1"),
+    AliasInfo("FLIP_Y", "2"),
+    AliasInfo("FLIP_XY", "3"),
+    AliasInfo("STAGE_RUNNING", "1"),
+    AliasInfo("STAGE_PAUSED", "2"),
+    AliasInfo("STAGE_FROZEN", "3"),
 #if !RETRO_REV00
-                                         AliasInfo("STAGE_2P", "4"),
+    AliasInfo("STAGE_2P", "4"),
 #endif
-                                         AliasInfo("ENGINE_DEVMENU", "0"),
-                                         AliasInfo("ENGINE_MAINGAME", "1"),
-                                         AliasInfo("ENGINE_INITDEVMENU", "2"),
-                                         AliasInfo("ENGINE_WAIT", "3"),
-                                         AliasInfo("ENGINE_SCRIPTERROR", "4"),
-                                         AliasInfo("ENGINE_INITPAUSE", "5"),
-                                         AliasInfo("ENGINE_EXITPAUSE", "6"),
-                                         AliasInfo("ENGINE_ENDGAME", "7"),
-                                         AliasInfo("ENGINE_RESETGAME", "8"),
-                                         AliasInfo("RESET_GAME", "2"),
-                                         AliasInfo("RETRO_STANDARD", "0"),
-                                         AliasInfo("RETRO_MOBILE", "1"),
-                                         AliasInfo("INK_NONE", "0"),
-                                         AliasInfo("INK_BLEND", "1"),
-                                         AliasInfo("INK_ALPHA", "2"),
-                                         AliasInfo("INK_ADD", "3"),
-                                         AliasInfo("INK_SUB", "4"),
-                                         AliasInfo("CSIDE_FLOOR", "0"),
-                                         AliasInfo("CSIDE_LWALL", "1"),
-                                         AliasInfo("CSIDE_RWALL", "2"),
-                                         AliasInfo("CSIDE_ROOF", "3"),
-                                         AliasInfo("CMODE_FLOOR", "0"),
-                                         AliasInfo("CMODE_LWALL", "1"),
-                                         AliasInfo("CMODE_ROOF", "2"),
-                                         AliasInfo("CMODE_RWALL", "3"),
-                                         AliasInfo("COL_NONE", "0"),
-                                         AliasInfo("COL_TOP", "1"),
-                                         AliasInfo("COL_LEFT", "2"),
-                                         AliasInfo("COL_RIGHT", "3"),
-                                         AliasInfo("COL_BOTTOM", "4"),
-                                         AliasInfo("PATH_A", "0"),
-                                         AliasInfo("PATH_B", "1"),
-                                         AliasInfo("GRAVITY_GROUND", "0"),
-                                         AliasInfo("GRAVITY_AIR", "1"),
-                                         AliasInfo("FACE_TEXTURED_3D", "0"),
-                                         AliasInfo("FACE_TEXTURED_2D", "1"),
-                                         AliasInfo("FACE_COLOURED_3D", "2"),
-                                         AliasInfo("FACE_COLOURED_2D", "3"),
-                                         AliasInfo("FACE_FADED", "4"),
-                                         AliasInfo("FACE_TEXTURED_C", "5"),
-                                         AliasInfo("FACE_TEXTURED_C_BLEND", "6"),
-                                         AliasInfo("FACE_TEXTURED_D", "6"), // identical to "FACE_TEXTURED_C_BLEND", but kept here for backwards compat purposes
-                                         AliasInfo("FACE_SPRITE_3D", "7"),
-                                         AliasInfo("PRIORITY_ACTIVE_BOUNDS", "0"),
-                                         AliasInfo("PRIORITY_ACTIVE", "1"),
-                                         AliasInfo("PRIORITY_ACTIVE_PAUSED", "2"),
-                                         AliasInfo("PRIORITY_XBOUNDS", "3"),
-                                         AliasInfo("PRIORITY_XBOUNDS_DESTROY", "4"),
-                                         AliasInfo("PRIORITY_INACTIVE", "5"),
-                                         AliasInfo("PRIORITY_BOUNDS_SMALL", "6"),
-                                         AliasInfo("PRIORITY_ACTIVE_SMALL", "7"),
-                                         AliasInfo("PRIORITY_UNKNOWN", "7"), // identical to "PRIORITY_ACTIVE_SMALL", but kept here for backwards compat purposes
-                                         AliasInfo("CONTROLMODE_NONE", "-1"),
-                                         AliasInfo("CONTROLMODE_NORMAL", "0"),
-                                         AliasInfo("CAMERASTYLE_FOLLOW", "0"),
-                                         AliasInfo("CAMERASTYLE_EXTENDED", "1"),
-                                         AliasInfo("CAMERASTYLE_EXTENDED_OFFSET_L", "2"),
-                                         AliasInfo("CAMERASTYLE_EXTENDED_OFFSET_R", "3"),
-                                         AliasInfo("CAMERASTYLE_HLOCKED", "4"),
-                                         AliasInfo("TILEINFO_INDEX", "0"),
-                                         AliasInfo("TILEINFO_DIRECTION", "1"),
-                                         AliasInfo("TILEINFO_VISUALPLANE", "2"),
-                                         AliasInfo("TILEINFO_SOLIDITYA", "3"),
-                                         AliasInfo("TILEINFO_SOLIDITYB", "4"),
-                                         AliasInfo("TILEINFO_FLAGSA", "5"),
-                                         AliasInfo("TILEINFO_ANGLEA", "6"),
-                                         AliasInfo("TILEINFO_FLAGSB", "7"),
-                                         AliasInfo("TILEINFO_ANGLEB", "8"),
-                                         AliasInfo("TEXTINFO_TEXTDATA", "0"),
-                                         AliasInfo("TEXTINFO_TEXTSIZE", "1"),
-                                         AliasInfo("TEXTINFO_ROWCOUNT", "2"),
-                                         AliasInfo("TILELAYER_NOSCROLL", "0"),
-                                         AliasInfo("TILELAYER_HSCROLL", "1"),
-                                         AliasInfo("TILELAYER_VSCROLL", "2"),
-                                         AliasInfo("TILELAYER_3DFLOOR", "3"),
-                                         AliasInfo("TILELAYER_3DSKY", "4"),
-                                         AliasInfo("GROUP_ALL", "0") };
+    AliasInfo("ENGINE_DEVMENU", "0"),
+    AliasInfo("ENGINE_MAINGAME", "1"),
+    AliasInfo("ENGINE_INITDEVMENU", "2"),
+    AliasInfo("ENGINE_WAIT", "3"),
+    AliasInfo("ENGINE_SCRIPTERROR", "4"),
+    AliasInfo("ENGINE_INITPAUSE", "5"),
+    AliasInfo("ENGINE_EXITPAUSE", "6"),
+    AliasInfo("ENGINE_ENDGAME", "7"),
+    AliasInfo("ENGINE_RESETGAME", "8"),
+    AliasInfo("RESET_GAME", "2"),
+    AliasInfo("RETRO_STANDARD", "0"),
+    AliasInfo("RETRO_MOBILE", "1"),
+    AliasInfo("INK_NONE", "0"),
+    AliasInfo("INK_BLEND", "1"),
+    AliasInfo("INK_ALPHA", "2"),
+    AliasInfo("INK_ADD", "3"),
+    AliasInfo("INK_SUB", "4"),
+    AliasInfo("CSIDE_FLOOR", "0"),
+    AliasInfo("CSIDE_LWALL", "1"),
+    AliasInfo("CSIDE_RWALL", "2"),
+    AliasInfo("CSIDE_ROOF", "3"),
+    AliasInfo("CMODE_FLOOR", "0"),
+    AliasInfo("CMODE_LWALL", "1"),
+    AliasInfo("CMODE_ROOF", "2"),
+    AliasInfo("CMODE_RWALL", "3"),
+    AliasInfo("COL_NONE", "0"),
+    AliasInfo("COL_TOP", "1"),
+    AliasInfo("COL_LEFT", "2"),
+    AliasInfo("COL_RIGHT", "3"),
+    AliasInfo("COL_BOTTOM", "4"),
+    AliasInfo("PATH_A", "0"),
+    AliasInfo("PATH_B", "1"),
+    AliasInfo("GRAVITY_GROUND", "0"),
+    AliasInfo("GRAVITY_AIR", "1"),
+    AliasInfo("FACE_TEXTURED_3D", "0"),
+    AliasInfo("FACE_TEXTURED_2D", "1"),
+    AliasInfo("FACE_COLOURED_3D", "2"),
+    AliasInfo("FACE_COLOURED_2D", "3"),
+    AliasInfo("FACE_FADED", "4"),
+    AliasInfo("FACE_TEXTURED_C", "5"),
+    AliasInfo("FACE_TEXTURED_C_BLEND", "6"),
+    AliasInfo("FACE_TEXTURED_D", "6"), // identical to "FACE_TEXTURED_C_BLEND", but kept here for backwards compat purposes
+    AliasInfo("FACE_SPRITE_3D", "7"),
+    AliasInfo("PRIORITY_ACTIVE_BOUNDS", "0"),
+    AliasInfo("PRIORITY_ACTIVE", "1"),
+    AliasInfo("PRIORITY_ACTIVE_PAUSED", "2"),
+    AliasInfo("PRIORITY_XBOUNDS", "3"),
+    AliasInfo("PRIORITY_XBOUNDS_DESTROY", "4"),
+    AliasInfo("PRIORITY_INACTIVE", "5"),
+    AliasInfo("PRIORITY_BOUNDS_SMALL", "6"),
+    AliasInfo("PRIORITY_ACTIVE_SMALL", "7"),
+    AliasInfo("PRIORITY_UNKNOWN", "7"), // identical to "PRIORITY_ACTIVE_SMALL", but kept here for backwards compat purposes
+    AliasInfo("CONTROLMODE_NONE", "-1"),
+    AliasInfo("CONTROLMODE_NORMAL", "0"),
+    AliasInfo("CAMERASTYLE_FOLLOW", "0"),
+    AliasInfo("CAMERASTYLE_EXTENDED", "1"),
+    AliasInfo("CAMERASTYLE_EXTENDED_OFFSET_L", "2"),
+    AliasInfo("CAMERASTYLE_EXTENDED_OFFSET_R", "3"),
+    AliasInfo("CAMERASTYLE_HLOCKED", "4"),
+    AliasInfo("TILEINFO_INDEX", "0"),
+    AliasInfo("TILEINFO_DIRECTION", "1"),
+    AliasInfo("TILEINFO_VISUALPLANE", "2"),
+    AliasInfo("TILEINFO_SOLIDITYA", "3"),
+    AliasInfo("TILEINFO_SOLIDITYB", "4"),
+    AliasInfo("TILEINFO_FLAGSA", "5"),
+    AliasInfo("TILEINFO_ANGLEA", "6"),
+    AliasInfo("TILEINFO_FLAGSB", "7"),
+    AliasInfo("TILEINFO_ANGLEB", "8"),
+    AliasInfo("TEXTINFO_TEXTDATA", "0"),
+    AliasInfo("TEXTINFO_TEXTSIZE", "1"),
+    AliasInfo("TEXTINFO_ROWCOUNT", "2"),
+    AliasInfo("TILELAYER_NOSCROLL", "0"),
+    AliasInfo("TILELAYER_HSCROLL", "1"),
+    AliasInfo("TILELAYER_VSCROLL", "2"),
+    AliasInfo("TILELAYER_3DFLOOR", "3"),
+    AliasInfo("TILELAYER_3DSKY", "4"),
+    AliasInfo("GROUP_ALL", "0")
+};
 AliasInfo privateAliases[ALIAS_COUNT_TRIM];
 int publicAliasCount  = 0;
 int privateAliasCount = 0;
@@ -1148,7 +1150,7 @@ void CheckAliasText(char *text)
         if (StrComp(priv ? privateAliases[v].name : publicAliases[v].name, a->name)) {
             char buf[0x40];
             sprintf(buf, "Warning: Alias %s has already been used!", a->name);
-            printLog(buf);
+            PrintLog(buf);
         }
     }
 
@@ -1209,7 +1211,7 @@ void CheckStaticText(char *text)
                     }
 
                     if (!ConvertStringToInteger(strBuffer, &var->value)) {
-                        printLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
+                        PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
                     }
                 }
 
@@ -1244,7 +1246,7 @@ void CheckStaticText(char *text)
         if (StrComp(priv ? privateStaticVariables[v].name : publicStaticVariables[v].name, var->name)) {
             char buf[0x40];
             sprintf(buf, "Warning: Variable %s has already been used!", var->name);
-            printLog(buf);
+            PrintLog(buf);
         }
     }
 
@@ -1693,7 +1695,7 @@ void ConvertFunctionText(char *text)
                 if (o == OBJECT_COUNT) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -1713,7 +1715,7 @@ void ConvertFunctionText(char *text)
                 if (s == SFX_COUNT) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -1733,7 +1735,7 @@ void ConvertFunctionText(char *text)
                 if (v == globalVariablesCount) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -1765,7 +1767,7 @@ void ConvertFunctionText(char *text)
                 if (a == achievementCount) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -1774,7 +1776,7 @@ void ConvertFunctionText(char *text)
                 funcName[0] = 0;
                 AppendIntegerToString(funcName, 0);
                 int p = 0;
-                for (; p < PLAYER_MAX; ++p) {
+                for (; p < PLAYER_COUNT; ++p) {
                     char buf[0x40];
                     char *str = playerNames[p];
                     int pos   = 0;
@@ -1793,10 +1795,10 @@ void ConvertFunctionText(char *text)
                     }
                 }
 
-                if (p == PLAYER_MAX) {
+                if (p == PLAYER_COUNT) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -1818,7 +1820,7 @@ void ConvertFunctionText(char *text)
                 if (s == -1) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                     s = 0;
                 }
                 funcName[0] = 0;
@@ -1999,7 +2001,7 @@ void CheckCaseNumber(char *text)
             if (o == OBJECT_COUNT) {
                 char buf[0x40];
                 sprintf(buf, "WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
-                printLog(buf);
+                PrintLog(buf);
             }
         }
 
@@ -2019,7 +2021,7 @@ void CheckCaseNumber(char *text)
             if (s == SFX_COUNT) {
                 char buf[0x40];
                 sprintf(buf, "WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
-                printLog(buf);
+                PrintLog(buf);
             }
         }
 
@@ -2039,7 +2041,7 @@ void CheckCaseNumber(char *text)
             if (v == globalVariablesCount) {
                 char buf[0x40];
                 sprintf(buf, "WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
-                printLog(buf);
+                PrintLog(buf);
             }
         }
 
@@ -2071,7 +2073,7 @@ void CheckCaseNumber(char *text)
             if (a == achievementCount) {
                 char buf[0x40];
                 sprintf(buf, "WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
-                printLog(buf);
+                PrintLog(buf);
             }
         }
 
@@ -2080,7 +2082,7 @@ void CheckCaseNumber(char *text)
             caseValue[0] = 0;
             AppendIntegerToString(caseValue, 0);
             int p = 0;
-            for (; p < PLAYER_MAX; ++p) {
+            for (; p < PLAYER_COUNT; ++p) {
                 char buf[0x40];
                 char *str = playerNames[p];
                 int pos   = 0;
@@ -2099,10 +2101,10 @@ void CheckCaseNumber(char *text)
                 }
             }
 
-            if (p == PLAYER_MAX) {
+            if (p == PLAYER_COUNT) {
                 char buf[0x40];
                 sprintf(buf, "WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
-                printLog(buf);
+                PrintLog(buf);
             }
         }
 
@@ -2124,7 +2126,7 @@ void CheckCaseNumber(char *text)
             if (s == -1) {
                 char buf[0x40];
                 sprintf(buf, "WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
-                printLog(buf);
+                PrintLog(buf);
                 s = 0;
             }
             caseValue[0] = 0;
@@ -2160,7 +2162,7 @@ void CheckCaseNumber(char *text)
             jumpTableData[stackValue] = caseID;
     }
     else {
-        printLog("WARNING: unable to convert case string \"%s\" to int, on line %d", caseString, lineID);
+        PrintLog("WARNING: unable to convert case string \"%s\" to int, on line %d", caseString, lineID);
     }
 }
 bool ReadSwitchCase(char *text)
@@ -2237,7 +2239,7 @@ bool ReadSwitchCase(char *text)
                 if (o == OBJECT_COUNT) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -2257,7 +2259,7 @@ bool ReadSwitchCase(char *text)
                 if (s == SFX_COUNT) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -2277,7 +2279,7 @@ bool ReadSwitchCase(char *text)
                 if (v == globalVariablesCount) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -2309,7 +2311,7 @@ bool ReadSwitchCase(char *text)
                 if (a == achievementCount) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -2318,7 +2320,7 @@ bool ReadSwitchCase(char *text)
                 caseValue[0] = 0;
                 AppendIntegerToString(caseValue, 0);
                 int p = 0;
-                for (; p < PLAYER_MAX; ++p) {
+                for (; p < PLAYER_COUNT; ++p) {
                     char buf[0x40];
                     char *str = playerNames[p];
                     int pos   = 0;
@@ -2337,10 +2339,10 @@ bool ReadSwitchCase(char *text)
                     }
                 }
 
-                if (p == PLAYER_MAX) {
+                if (p == PLAYER_COUNT) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                 }
             }
 
@@ -2362,7 +2364,7 @@ bool ReadSwitchCase(char *text)
                 if (s == -1) {
                     char buf[0x40];
                     sprintf(buf, "WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
-                    printLog(buf);
+                    PrintLog(buf);
                     s = 0;
                 }
                 caseValue[0] = 0;
@@ -2395,7 +2397,7 @@ bool ReadSwitchCase(char *text)
         if (ConvertStringToInteger(caseText, &val))
             jumpTableData[val - jumpTableData[jPos] + jOffset] = scriptDataPos - scriptDataOffset;
         else
-            printLog("WARNING: unable to read case string \"%s\" as an int, on line %d", caseText, lineID);
+            PrintLog("WARNING: unable to read case string \"%s\" as an int, on line %d", caseText, lineID);
         return true;
     }
     return false;
@@ -2429,7 +2431,7 @@ void ReadTableValues(char *text)
                     }
 
                     if (!ConvertStringToInteger(strBuffer, &currentTable->values[cnt].value)) {
-                        printLog("WARNING: unable to convert table var %d value \"%s\" to int, on line %d", cnt, strBuffer, lineID);
+                        PrintLog("WARNING: unable to convert table var %d value \"%s\" to int, on line %d", cnt, strBuffer, lineID);
                     }
                 }
                 currentTable->valueCount++;
@@ -2777,7 +2779,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                         else {
                             char buf[0x40];
                             sprintf(buf, "Warning: Function %s has already been reserved!", funcName);
-                            printLog(buf);
+                            PrintLog(buf);
                         }
                         parseMode = PARSEMODE_SCOPELESS;
                     }
@@ -2909,7 +2911,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                                 if (StrComp(publicTables[t].name, currentTable->name)) {
                                     char buf[0x40];
                                     sprintf(buf, "Warning: Table %s has already been used!", currentTable->name);
-                                    printLog(buf);
+                                    PrintLog(buf);
                                 }
                             }
 
@@ -2921,7 +2923,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                                 if (StrComp(privateTables[t].name, currentTable->name)) {
                                     char buf[0x40];
                                     sprintf(buf, "Warning: Table %s has already been used!", currentTable->name);
-                                    printLog(buf);
+                                    PrintLog(buf);
                                 }
                             }
 
@@ -3916,7 +3918,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                     case VAR_SCENE3DPROJECTIONX: scriptEng.operands[i] = projectionX; break;
                     case VAR_SCENE3DPROJECTIONY: scriptEng.operands[i] = projectionY; break;
 #if !RETRO_REV00
-                    case VAR_SCENE3DFOGCOLOR: scriptEng.operands[i] = fogColour; break;
+                    case VAR_SCENE3DFOGCOLOR: scriptEng.operands[i] = fogColor; break;
                     case VAR_SCENE3DFOGSTRENGTH: scriptEng.operands[i] = fogStrength; break;
 #endif
                     case VAR_VERTEXBUFFERX: scriptEng.operands[i] = vertexBuffer[arrayVal].x; break;
@@ -3929,7 +3931,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                     case VAR_FACEBUFFERC: scriptEng.operands[i] = faceBuffer[arrayVal].c; break;
                     case VAR_FACEBUFFERD: scriptEng.operands[i] = faceBuffer[arrayVal].d; break;
                     case VAR_FACEBUFFERFLAG: scriptEng.operands[i] = faceBuffer[arrayVal].flag; break;
-                    case VAR_FACEBUFFERCOLOR: scriptEng.operands[i] = faceBuffer[arrayVal].colour; break;
+                    case VAR_FACEBUFFERCOLOR: scriptEng.operands[i] = faceBuffer[arrayVal].color; break;
                     case VAR_SAVERAM: scriptEng.operands[i] = saveRAM[arrayVal]; break;
                     case VAR_ENGINESTATE: scriptEng.operands[i] = Engine.gameMode; break;
 #if RETRO_REV00
@@ -4201,19 +4203,19 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                 break;
             case FUNC_RAND: scriptEng.operands[0] = rand() % scriptEng.operands[1]; break;
             case FUNC_SIN: {
-                scriptEng.operands[0] = sin512(scriptEng.operands[1]);
+                scriptEng.operands[0] = Sin512(scriptEng.operands[1]);
                 break;
             }
             case FUNC_COS: {
-                scriptEng.operands[0] = cos512(scriptEng.operands[1]);
+                scriptEng.operands[0] = Cos512(scriptEng.operands[1]);
                 break;
             }
             case FUNC_SIN256: {
-                scriptEng.operands[0] = sin256(scriptEng.operands[1]);
+                scriptEng.operands[0] = Sin256(scriptEng.operands[1]);
                 break;
             }
             case FUNC_COS256: {
-                scriptEng.operands[0] = cos256(scriptEng.operands[1]);
+                scriptEng.operands[0] = Cos256(scriptEng.operands[1]);
                 break;
             }
             case FUNC_ATAN2: {
@@ -4881,16 +4883,16 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
             case FUNC_NOT: scriptEng.operands[0] = ~scriptEng.operands[0]; break;
             case FUNC_DRAW3DSCENE:
                 opcodeSize = 0;
-                transformVertexBuffer();
-                sort3DDrawList();
-                draw3DScene(scriptInfo->spriteSheetID);
+                TransformVertexBuffer();
+                Sort3DDrawList();
+                Draw3DScene(scriptInfo->spriteSheetID);
                 break;
             case FUNC_SETIDENTITYMATRIX:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: setIdentityMatrix(&matWorld); break;
-                    case MAT_VIEW: setIdentityMatrix(&matView); break;
-                    case MAT_TEMP: setIdentityMatrix(&matTemp); break;
+                    case MAT_WORLD: SetIdentityMatrix(&matWorld); break;
+                    case MAT_VIEW: SetIdentityMatrix(&matView); break;
+                    case MAT_TEMP: SetIdentityMatrix(&matTemp); break;
                 }
                 break;
             case FUNC_MATRIXMULTIPLY:
@@ -4898,23 +4900,23 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                 switch (scriptEng.operands[0]) {
                     case MAT_WORLD:
                         switch (scriptEng.operands[1]) {
-                            case MAT_WORLD: matrixMultiply(&matWorld, &matWorld); break;
-                            case MAT_VIEW: matrixMultiply(&matWorld, &matView); break;
-                            case MAT_TEMP: matrixMultiply(&matWorld, &matTemp); break;
+                            case MAT_WORLD: MatrixMultiply(&matWorld, &matWorld); break;
+                            case MAT_VIEW: MatrixMultiply(&matWorld, &matView); break;
+                            case MAT_TEMP: MatrixMultiply(&matWorld, &matTemp); break;
                         }
                         break;
                     case MAT_VIEW:
                         switch (scriptEng.operands[1]) {
-                            case MAT_WORLD: matrixMultiply(&matView, &matWorld); break;
-                            case MAT_VIEW: matrixMultiply(&matView, &matView); break;
-                            case MAT_TEMP: matrixMultiply(&matView, &matTemp); break;
+                            case MAT_WORLD: MatrixMultiply(&matView, &matWorld); break;
+                            case MAT_VIEW: MatrixMultiply(&matView, &matView); break;
+                            case MAT_TEMP: MatrixMultiply(&matView, &matTemp); break;
                         }
                         break;
                     case MAT_TEMP:
                         switch (scriptEng.operands[1]) {
-                            case MAT_WORLD: matrixMultiply(&matTemp, &matWorld); break;
-                            case MAT_VIEW: matrixMultiply(&matTemp, &matView); break;
-                            case MAT_TEMP: matrixMultiply(&matTemp, &matTemp); break;
+                            case MAT_WORLD: MatrixMultiply(&matTemp, &matWorld); break;
+                            case MAT_VIEW: MatrixMultiply(&matTemp, &matView); break;
+                            case MAT_TEMP: MatrixMultiply(&matTemp, &matTemp); break;
                         }
                         break;
                 }
@@ -4922,67 +4924,67 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
             case FUNC_MATRIXTRANSLATEXYZ:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: matrixTranslateXYZ(&matWorld, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
-                    case MAT_VIEW: matrixTranslateXYZ(&matView, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
-                    case MAT_TEMP: matrixTranslateXYZ(&matTemp, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_WORLD: MatrixTranslateXYZ(&matWorld, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_VIEW: MatrixTranslateXYZ(&matView, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_TEMP: MatrixTranslateXYZ(&matTemp, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
                 }
                 break;
             case FUNC_MATRIXSCALEXYZ:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: matrixScaleXYZ(&matWorld, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
-                    case MAT_VIEW: matrixScaleXYZ(&matView, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
-                    case MAT_TEMP: matrixScaleXYZ(&matTemp, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_WORLD: MatrixScaleXYZ(&matWorld, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_VIEW: MatrixScaleXYZ(&matView, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_TEMP: MatrixScaleXYZ(&matTemp, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
                 }
                 break;
             case FUNC_MATRIXROTATEX:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: matrixRotateX(&matWorld, scriptEng.operands[1]); break;
-                    case MAT_VIEW: matrixRotateX(&matView, scriptEng.operands[1]); break;
-                    case MAT_TEMP: matrixRotateX(&matTemp, scriptEng.operands[1]); break;
+                    case MAT_WORLD: MatrixRotateX(&matWorld, scriptEng.operands[1]); break;
+                    case MAT_VIEW: MatrixRotateX(&matView, scriptEng.operands[1]); break;
+                    case MAT_TEMP: MatrixRotateX(&matTemp, scriptEng.operands[1]); break;
                 }
                 break;
             case FUNC_MATRIXROTATEY:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: matrixRotateY(&matWorld, scriptEng.operands[1]); break;
-                    case MAT_VIEW: matrixRotateY(&matView, scriptEng.operands[1]); break;
-                    case MAT_TEMP: matrixRotateY(&matTemp, scriptEng.operands[1]); break;
+                    case MAT_WORLD: MatrixRotateY(&matWorld, scriptEng.operands[1]); break;
+                    case MAT_VIEW: MatrixRotateY(&matView, scriptEng.operands[1]); break;
+                    case MAT_TEMP: MatrixRotateY(&matTemp, scriptEng.operands[1]); break;
                 }
                 break;
             case FUNC_MATRIXROTATEZ:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: matrixRotateZ(&matWorld, scriptEng.operands[1]); break;
-                    case MAT_VIEW: matrixRotateZ(&matView, scriptEng.operands[1]); break;
-                    case MAT_TEMP: matrixRotateZ(&matTemp, scriptEng.operands[1]); break;
+                    case MAT_WORLD: MatrixRotateZ(&matWorld, scriptEng.operands[1]); break;
+                    case MAT_VIEW: MatrixRotateZ(&matView, scriptEng.operands[1]); break;
+                    case MAT_TEMP: MatrixRotateZ(&matTemp, scriptEng.operands[1]); break;
                 }
                 break;
             case FUNC_MATRIXROTATEXYZ:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: matrixRotateXYZ(&matWorld, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
-                    case MAT_VIEW: matrixRotateXYZ(&matView, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
-                    case MAT_TEMP: matrixRotateXYZ(&matTemp, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_WORLD: MatrixRotateXYZ(&matWorld, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_VIEW: MatrixRotateXYZ(&matView, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
+                    case MAT_TEMP: MatrixRotateXYZ(&matTemp, scriptEng.operands[1], scriptEng.operands[2], scriptEng.operands[3]); break;
                 }
                 break;
 #if !RETRO_REV00
             case FUNC_MATRIXINVERSE:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: matrixInverse(&matWorld); break;
-                    case MAT_VIEW: matrixInverse(&matView); break;
-                    case MAT_TEMP: matrixInverse(&matTemp); break;
+                    case MAT_WORLD: MatrixInverse(&matWorld); break;
+                    case MAT_VIEW: MatrixInverse(&matView); break;
+                    case MAT_TEMP: MatrixInverse(&matTemp); break;
                 }
                 break;
 #endif
             case FUNC_TRANSFORMVERTICES:
                 opcodeSize = 0;
                 switch (scriptEng.operands[0]) {
-                    case MAT_WORLD: transformVertices(&matWorld, scriptEng.operands[1], scriptEng.operands[2]); break;
-                    case MAT_VIEW: transformVertices(&matView, scriptEng.operands[1], scriptEng.operands[2]); break;
-                    case MAT_TEMP: transformVertices(&matTemp, scriptEng.operands[1], scriptEng.operands[2]); break;
+                    case MAT_WORLD: TransformVertices(&matWorld, scriptEng.operands[1], scriptEng.operands[2]); break;
+                    case MAT_VIEW: TransformVertices(&matView, scriptEng.operands[1], scriptEng.operands[2]); break;
+                    case MAT_TEMP: TransformVertices(&matTemp, scriptEng.operands[1], scriptEng.operands[2]); break;
                 }
                 break;
             case FUNC_CALLFUNCTION: {
@@ -5190,14 +5192,14 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
             }
             case FUNC_CALLNATIVEFUNCTION:
                 opcodeSize = 0;
-                if (scriptEng.operands[0] >= 0 && scriptEng.operands[0] < NATIIVEFUNCTION_MAX) {
+                if (scriptEng.operands[0] >= 0 && scriptEng.operands[0] < NATIIVEFUNCTION_COUNT) {
                     void (*func)(void) = (void (*)(void))nativeFunction[scriptEng.operands[0]];
                     if (func)
                         func();
                 }
                 break;
             case FUNC_CALLNATIVEFUNCTION2:
-                if (scriptEng.operands[0] >= 0 && scriptEng.operands[0] < NATIIVEFUNCTION_MAX) {
+                if (scriptEng.operands[0] >= 0 && scriptEng.operands[0] < NATIIVEFUNCTION_COUNT) {
                     if (StrLength(scriptText)) {
                         void (*func)(int *, char *) = (void (*)(int *, char *))nativeFunction[scriptEng.operands[0]];
                         if (func)
@@ -5211,7 +5213,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                 }
                 break;
             case FUNC_CALLNATIVEFUNCTION4:
-                if (scriptEng.operands[0] >= 0 && scriptEng.operands[0] < NATIIVEFUNCTION_MAX) {
+                if (scriptEng.operands[0] >= 0 && scriptEng.operands[0] < NATIIVEFUNCTION_COUNT) {
                     if (StrLength(scriptText)) {
                         void (*func)(int *, char *, int *, int *) = (void (*)(int *, char *, int *, int *))nativeFunction[scriptEng.operands[0]];
                         if (func)
@@ -5256,12 +5258,12 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
             case FUNC_PRINT: {
                 endLine = false;
                 if (scriptEng.operands[1])
-                    printLog("%d", scriptEng.operands[0]);
+                    PrintLog("%d", scriptEng.operands[0]);
                 else
-                    printLog("%s", scriptText);
+                    PrintLog("%s", scriptText);
 
                 if (scriptEng.operands[2])
-                    printLog("\n");
+                    PrintLog("\n");
                 endLine = true;
                 break;
             }
@@ -5849,7 +5851,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                     case VAR_SCENE3DPROJECTIONX: projectionX = scriptEng.operands[i]; break;
                     case VAR_SCENE3DPROJECTIONY: projectionY = scriptEng.operands[i]; break;
 #if !RETRO_REV00
-                    case VAR_SCENE3DFOGCOLOR: fogColour = scriptEng.operands[i]; break;
+                    case VAR_SCENE3DFOGCOLOR: fogColor = scriptEng.operands[i]; break;
                     case VAR_SCENE3DFOGSTRENGTH: fogStrength = scriptEng.operands[i]; break;
 #endif
                     case VAR_VERTEXBUFFERX: vertexBuffer[arrayVal].x = scriptEng.operands[i]; break;
@@ -5862,7 +5864,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                     case VAR_FACEBUFFERC: faceBuffer[arrayVal].c = scriptEng.operands[i]; break;
                     case VAR_FACEBUFFERD: faceBuffer[arrayVal].d = scriptEng.operands[i]; break;
                     case VAR_FACEBUFFERFLAG: faceBuffer[arrayVal].flag = scriptEng.operands[i]; break;
-                    case VAR_FACEBUFFERCOLOR: faceBuffer[arrayVal].colour = scriptEng.operands[i]; break;
+                    case VAR_FACEBUFFERCOLOR: faceBuffer[arrayVal].color = scriptEng.operands[i]; break;
                     case VAR_SAVERAM: saveRAM[arrayVal] = scriptEng.operands[i]; break;
                     case VAR_ENGINESTATE: Engine.gameMode = scriptEng.operands[i]; break;
 #if RETRO_REV00
