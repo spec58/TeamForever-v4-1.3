@@ -151,9 +151,7 @@ void InitUserdata();
 void WriteSettings();
 void ReadUserdata();
 void WriteUserdata();
-#endif
 
-#if !RETRO_USE_ORIGINAL_CODE
 inline void AddAchievement(const char *name, const char *description)
 {
     if (achievementCount < ACHIEVEMENT_COUNT) {
@@ -211,9 +209,13 @@ void ExitGame();
 void FileExists(int *unused, const char *filePath);
 
 #if RETRO_USE_MOD_LOADER
+void GetScreenWidth();
 void SetScreenWidth(int *width, int *unused);
+void GetWindowScale();
 void SetWindowScale(int *scale, int *unused);
+void GetWindowFullScreen();
 void SetWindowFullScreen(int *fullscreen, int *unused);
+void GetWindowBorderless();
 void SetWindowBorderless(int *borderless, int *unused);
 #endif
 

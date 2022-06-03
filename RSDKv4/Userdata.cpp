@@ -1226,6 +1226,12 @@ void FileExists(int *unused, const char *filePath)
     }
 }
 
+#if RETRO_USE_MOD_LOADER
+void GetScreenWidth() { scriptEng.checkResult = SCREEN_XSIZE_CONFIG; }
+void GetWindowScale() { scriptEng.checkResult = Engine.windowScale; }
+void GetWindowFullScreen() { scriptEng.checkResult = Engine.isFullScreen; }
+void GetWindowBorderless() { scriptEng.checkResult = Engine.borderless; }
+
 void SetScreenWidth(int *width, int *unused)
 {
     SCREEN_XSIZE_CONFIG = *width;
@@ -1243,6 +1249,7 @@ void SetScreenWidth(int *width, int *unused)
     SetupViewport();
 #endif
 }
+
 void SetWindowScale(int *scale, int *unused)
 {
     Engine.windowScale = *scale;
@@ -1257,12 +1264,14 @@ void SetWindowScale(int *scale, int *unused)
     SetupViewport();
 #endif
 }
+
 void SetWindowFullScreen(int *fullscreen, int *unused)
 {
     Engine.isFullScreen    = *fullscreen;
     Engine.startFullScreen = *fullscreen;
     SetFullScreen(Engine.isFullScreen);
 }
+
 void SetWindowBorderless(int *borderless, int *unused)
 {
     Engine.borderless = *borderless;
@@ -1271,3 +1280,4 @@ void SetWindowBorderless(int *borderless, int *unused)
     SDL_SetWindowBordered(Engine.window, Engine.borderless ? SDL_FALSE : SDL_TRUE);
 #endif
 }
+#endif
