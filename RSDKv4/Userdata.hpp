@@ -178,6 +178,7 @@ inline void LoadAchievementsMenu()
     ReadUserdata();
 #endif
 }
+
 void ShowAchievementsScreen();
 
 int SetLeaderboard(int *leaderboardID, int *result);
