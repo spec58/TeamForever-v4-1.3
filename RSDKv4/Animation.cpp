@@ -2,7 +2,7 @@
 
 AnimationFile animationFileList[ANIFILE_COUNT];
 int animationFileCount = 0;
- 
+
 SpriteFrame scriptFrames[SPRITEFRAME_COUNT];
 int scriptFrameCount = 0;
 
