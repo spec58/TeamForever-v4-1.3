@@ -431,7 +431,7 @@ public:
 
     bool startFullScreen  = false; // if should start as fullscreen
     bool borderless       = false;
-    bool vsync            = false;
+    bool vsync            = true;
     int scalingMode       = 0;
     int windowScale       = 2;
     int refreshRate       = 60; // user-picked screen update rate
