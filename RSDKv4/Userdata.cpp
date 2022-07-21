@@ -468,7 +468,7 @@ void InitUserdata()
             Engine.borderless = false;
         if (!ini.GetBool("Window", "VSync", &Engine.vsync))
             Engine.vsync = true;
-        if (!ini.GetInteger("Window", "ScalingMode", &Engine.scalingMode))
+        //if (!ini.GetInteger("Window", "ScalingMode", &Engine.scalingMode))
             Engine.scalingMode = 0;
         if (!ini.GetInteger("Window", "WindowScale", &Engine.windowScale))
             Engine.windowScale = 2;
