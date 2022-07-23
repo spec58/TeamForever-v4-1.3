@@ -554,6 +554,42 @@ void ReleaseRenderDevice()
 #endif
 }
 
+void ResetRenderDevice()
+{
+    ClearMeshData();
+    ClearTextures(false);
+
+#if !RETRO_USE_ORIGINAL_CODE
+#if RETRO_SOFTWARE_RENDER
+    if (Engine.frameBuffer)
+        delete[] Engine.frameBuffer;
+    if (Engine.frameBuffer2x)
+        delete[] Engine.frameBuffer2x;
+#if RETRO_USING_SDL2 && !RETRO_USING_OPENGL
+    SDL_DestroyTexture(Engine.screenBuffer);
+    Engine.screenBuffer = NULL;
+#endif
+    if (Engine.texBuffer)
+        delete[] Engine.texBuffer;
+
+#if RETRO_USING_SDL1
+    SDL_FreeSurface(Engine.screenBuffer);
+#endif
+#endif
+
+#if RETRO_USING_OPENGL
+    if (Engine.glContext)
+        SDL_GL_DeleteContext(Engine.glContext);
+#endif
+
+#if RETRO_USING_SDL2
+#if !RETRO_USING_OPENGL
+    SDL_DestroyRenderer(Engine.renderer);
+#endif
+#endif
+#endif
+}
+
 void GenerateBlendLookupTable(void)
 {
     for (int y = 0; y < 0x100; y++) {

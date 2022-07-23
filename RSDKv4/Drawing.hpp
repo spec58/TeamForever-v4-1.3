@@ -75,6 +75,7 @@ extern GLuint renderbufferHiRes;
 int InitRenderDevice();
 void FlipScreen();
 void ReleaseRenderDevice();
+void ResetRenderDevice();
 
 void GenerateBlendLookupTable();
 

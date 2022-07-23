@@ -1238,8 +1238,13 @@ void SetScreenWidth(int *width, int *unused)
 #if RETRO_PLATFORM != RETRO_ANDROID
     SetScreenDimensions(SCREEN_XSIZE_CONFIG * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale);
 #endif
-#if RETRO_USING_SDL2
-    InitRenderDevice();
+
+
+#if RETRO_USING_SDL2	
+	ResetRenderDevice();
+	SDL_SetWindowSize(Engine.window, SCREEN_XSIZE_CONFIG * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale);	
+	SDL_SetWindowPosition(Engine.window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	InitRenderDevice();
 #endif
 
 #if RETRO_USING_OPENGL
