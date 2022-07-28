@@ -1175,6 +1175,7 @@ bool RetroEngine::LoadGameConfig(const char *filePath)
     AddNativeFunction("GetModVersion", GetModVersion);
     AddNativeFunction("GetModActive", GetModActive);
     AddNativeFunction("SetModActive", SetModActive);
+	AddNativeFunction("MoveMod", MoveMod);
     AddNativeFunction("RefreshEngine", RefreshEngine); // Reload engine after changing mod status
 #endif
 
