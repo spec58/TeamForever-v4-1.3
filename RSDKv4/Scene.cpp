@@ -218,11 +218,13 @@ void ProcessStage(void)
             lastYSize = -1;
             CheckKeyDown(&inputDown);
             CheckKeyPress(&inputPress);
+			/*
             if (pauseEnabled && inputPress.start) {
                 stageMode = STAGEMODE_NORMAL_STEP;
                 PauseSound();
             }
-
+			*/
+			
             if (timeEnabled) {
                 if (++frameCounter == 60) {
                     frameCounter = 0;
@@ -270,11 +272,13 @@ void ProcessStage(void)
             CheckKeyDown(&inputDown);
             CheckKeyPress(&inputPress);
 
+			/*
             if (pauseEnabled && inputPress.start) {
                 stageMode = STAGEMODE_PAUSED_STEP;
                 PauseSound();
             }
-
+			*/
+			
             // Update
             ProcessPausedObjects();
 
@@ -340,10 +344,12 @@ void ProcessStage(void)
             lastYSize = -1;
             CheckKeyDown(&inputDown);
             CheckKeyPress(&inputPress);
+			/*
             if (pauseEnabled && inputPress.start) {
                 stageMode = STAGEMODE_2P_STEP;
                 PauseSound();
             }
+			*/
 
             if (!waitForVerify) {
                 if (timeEnabled) {
