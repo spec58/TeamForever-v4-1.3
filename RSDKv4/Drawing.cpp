@@ -100,11 +100,9 @@ int InitRenderDevice()
 #endif
 
     SCREEN_CENTERX = SCREEN_XSIZE / 2;
-    if (windowCreated == false) {
-        Engine.window = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_XSIZE * Engine.windowScale,
-                                         SCREEN_YSIZE * Engine.windowScale, SDL_WINDOW_ALLOW_HIGHDPI | flags);
-        windowCreated = true;
-    }
+    Engine.window  = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_XSIZE * Engine.windowScale,
+                                     SCREEN_YSIZE * Engine.windowScale, SDL_WINDOW_ALLOW_HIGHDPI | flags);
+									 
     if (!Engine.window) {
         PrintLog("ERROR: failed to create window!");
         return 0;
@@ -324,10 +322,22 @@ void FlipScreen()
     switch (Engine.scalingMode) {
         // reset to default if value is invalid.
         default: Engine.scalingMode = 0; break;
-        case 0: break;                         // nearest
-        case 1: integerScaling = true; break;  // integer scaling
-        case 2: break;                         // sharp bilinear
-        case 3: bilinearScaling = true; break; // regular old bilinear
+        case 0: // nearest
+			integerScaling = false;
+			bilinearScaling = false;
+			break;                         
+        case 1: // integer scaling
+			integerScaling = true;
+			bilinearScaling = false;
+			break;  
+        case 2: // sharp bilinear
+			integerScaling = false;
+			bilinearScaling = false;
+			break;                         
+        case 3: // regular old bilinear
+			integerScaling = false;
+			bilinearScaling = true;
+			break; 
     }
 
     SDL_GetWindowSize(Engine.window, &Engine.windowXSize, &Engine.windowYSize);
@@ -339,8 +349,8 @@ void FlipScreen()
     if (Engine.scalingMode == 2) {
         bool cond1 = std::round((Engine.windowXSize / screenxsize) * 24) / 24 == std::floor(Engine.windowXSize / screenxsize);
         bool cond2 = std::round((Engine.windowYSize / screenysize) * 24) / 24 == std::floor(Engine.windowYSize / screenysize);
-        if (cond1 || cond2)
-            disableEnhancedScaling = true;
+        //if (cond1 || cond2)
+           //disableEnhancedScaling = true;
     }
 
     // get 2x resolution if HQ is enabled.
@@ -517,10 +527,12 @@ void FlipScreen()
 
 #endif
 }
-void ReleaseRenderDevice()
+void ReleaseRenderDevice(bool refresh)
 {
-    ClearMeshData();
-    ClearTextures(false);
+	if (!refresh) {
+		ClearMeshData();
+		ClearTextures(false);
+	}
 
 #if !RETRO_USE_ORIGINAL_CODE
 #if RETRO_SOFTWARE_RENDER
@@ -550,42 +562,6 @@ void ReleaseRenderDevice()
     SDL_DestroyRenderer(Engine.renderer);
 #endif
     SDL_DestroyWindow(Engine.window);
-#endif
-#endif
-}
-
-void ResetRenderDevice()
-{
-    ClearMeshData();
-    ClearTextures(false);
-
-#if !RETRO_USE_ORIGINAL_CODE
-#if RETRO_SOFTWARE_RENDER
-    if (Engine.frameBuffer)
-        delete[] Engine.frameBuffer;
-    if (Engine.frameBuffer2x)
-        delete[] Engine.frameBuffer2x;
-#if RETRO_USING_SDL2 && !RETRO_USING_OPENGL
-    SDL_DestroyTexture(Engine.screenBuffer);
-    Engine.screenBuffer = NULL;
-#endif
-    if (Engine.texBuffer)
-        delete[] Engine.texBuffer;
-
-#if RETRO_USING_SDL1
-    SDL_FreeSurface(Engine.screenBuffer);
-#endif
-#endif
-
-#if RETRO_USING_OPENGL
-    if (Engine.glContext)
-        SDL_GL_DeleteContext(Engine.glContext);
-#endif
-
-#if RETRO_USING_SDL2
-#if !RETRO_USING_OPENGL
-    SDL_DestroyRenderer(Engine.renderer);
-#endif
 #endif
 #endif
 }
