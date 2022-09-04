@@ -2,7 +2,7 @@ name: Build RSDKv4
 on:
   push:
     branches:
-      - master
+      - foreve
       - main
       - win-actions
       - linux-actions
