@@ -82,7 +82,7 @@ Follow the installation instructions in the readme of each branch.
   * A New Nintendo 3DS is required for the games to run smoothly.
 * To play it on the web using **Wasm**, go to [mattConn's fork](https://github.com/mattConn/Sonic-Decompilation-WASM).
 
-Because these branches are unofficial, we can't provide support for them and they may not be up-to-date.
+Because these branches are unofficial, we cannot provide support for them and they may not be up-to-date.
 
 ## Other Platforms
 Currently the only supported platforms are the ones listed above, however the backend uses libogg, libvorbis & SDL2 to power it (as well as tinyxml2 for the mod API and asio for networking), so the codebase is very multiplatform.
