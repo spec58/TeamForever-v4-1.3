@@ -480,7 +480,7 @@ void Draw3DScene(int spriteSheetID)
                     quad[3].u = vertexBuffer[face->a].u + vertexBuffer[face->c].u;
                     quad[3].v = vertexBuffer[face->a].v + vertexBuffer[face->c].v;
 
-                    DrawTexturedFace(quad, spriteSheetID);
+                    DrawTexturedFaceBlended(quad, spriteSheetID);
                 }
                 break;
             case FACE_FLAG_3DSPRITE:
