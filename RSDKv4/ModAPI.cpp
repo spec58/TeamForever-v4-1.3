@@ -578,8 +578,8 @@ void MoveMod(uint *id, int *up)
         return;
 
     int preOption = *id;
-    int option    = preOption + (up ? -1 : 1);
-    if (option <= 0 || preOption <= 0)
+    int option    = preOption + (*up ? -1 : 1);
+    if (option < 0 || preOption < 0)
         return;
 
     if (option >= (int)modList.size() || preOption >= (int)modList.size())
