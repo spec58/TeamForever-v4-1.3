@@ -1,5 +1,12 @@
 #include "RetroEngine.hpp"
 
+// Your guess is as good as mine
+#if RETRO_PLATFORM == RETRO_SWITCH
+long pathconf (const char *__path, int __name) {
+    return 0;
+}
+#endif
+
 int globalVariablesCount;
 int globalVariables[GLOBALVAR_COUNT];
 char globalVariableNames[GLOBALVAR_COUNT][0x20];

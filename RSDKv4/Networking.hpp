@@ -1,6 +1,7 @@
-#if RETRO_USE_NETWORKING
 #ifndef NETWORKING_H
 #define NETWORKING_H
+
+#if RETRO_USE_NETWORKING
 #include <thread>
 #include <memory>
 

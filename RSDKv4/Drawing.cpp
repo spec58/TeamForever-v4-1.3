@@ -205,7 +205,10 @@ int InitRenderDevice()
 
     SDL_GL_SetSwapInterval(Engine.vsync ? 1 : 0);
 
-#if RETRO_PLATFORM != RETRO_ANDROID && RETRO_PLATFORM != RETRO_OSX
+#if RETRO_PLATFORM == RETRO_SWITCH
+    // Should probably add error
+    gladLoadGL();
+#elif RETRO_PLATFORM != RETRO_ANDROID && RETRO_PLATFORM != RETRO_OSX
     GLenum err = glewInit();
     if (err != GLEW_OK) {
         PrintLog("glew init error:");
@@ -298,6 +301,7 @@ int InitRenderDevice()
 void FlipScreen()
 {
 #if !RETRO_USE_ORIGINAL_CODE
+#if RETRO_PLATFORM != RETRO_SWITCH //switch doesn't need this it's builtin
     float dimAmount = 1.0;
     if ((!Engine.masterPaused || Engine.frameStep) && !drawStageGFXHQ) {
         if (Engine.dimTimer < Engine.dimLimit) {
@@ -313,7 +317,7 @@ void FlipScreen()
 
         dimAmount = Engine.dimMax * Engine.dimPercent;
     }
-
+#endif //! RETRO_PLATFORM != RETRO_SWITCH
 #if RETRO_SOFTWARE_RENDER && !RETRO_USING_OPENGL
 #if RETRO_USING_SDL2
     SDL_Rect destScreenPos_scaled;
