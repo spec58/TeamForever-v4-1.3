@@ -342,6 +342,7 @@ const char variableNames[][0x20] = {
     "engine.onlineActive",
     "engine.sfxVolume",
     "engine.bgmVolume",
+    "engine.platformID",
     "engine.trialMode",
     "engine.deviceType",
 #if RETRO_USE_HAPTICS
@@ -933,6 +934,7 @@ enum ScrVar {
     VAR_ENGINEONLINEACTIVE,
     VAR_ENGINESFXVOLUME,
     VAR_ENGINEBGMVOLUME,
+    VAR_ENGINEPLATFORMID, // v3-style device type aka Windows/Mac/Android/etc
     VAR_ENGINETRIALMODE,
     VAR_ENGINEDEVICETYPE,
 #if RETRO_USE_HAPTICS
@@ -3941,9 +3943,12 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                     case VAR_ENGINEONLINEACTIVE: scriptEng.operands[i] = Engine.onlineActive; break;
                     case VAR_ENGINESFXVOLUME: scriptEng.operands[i] = sfxVolume; break;
                     case VAR_ENGINEBGMVOLUME: scriptEng.operands[i] = bgmVolume; break;
+                    case VAR_ENGINEPLATFORMID: scriptEng.operands[i] = RETRO_GAMEPLATFORMID; break;
                     case VAR_ENGINETRIALMODE: scriptEng.operands[i] = Engine.trialMode; break;
                     case VAR_ENGINEDEVICETYPE: scriptEng.operands[i] = RETRO_DEVICETYPE; break;
+#if RETRO_USE_HAPTICS
                     case VAR_HAPTICSENABLED: scriptEng.operands[i] = Engine.hapticsEnabled; break;
+#endif
                 }
             }
             else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
@@ -5880,8 +5885,14 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                         bgmVolume = scriptEng.operands[i];
                         SetGameVolumes(bgmVolume, sfxVolume);
                         break;
+                    case VAR_ENGINEPLATFORMID: break;
                     case VAR_ENGINETRIALMODE: Engine.trialMode = scriptEng.operands[i]; break;
-                    case VAR_ENGINEDEVICETYPE: Engine.hapticsEnabled = scriptEng.operands[i]; break;
+#if !RETRO_REV00
+                    case VAR_ENGINEDEVICETYPE: break;
+#endif
+#if RETRO_USE_HAPTICS
+                    case VAR_HAPTICSENABLED: Engine.hapticsEnabled = scriptEng.operands[i]; break;
+#endif
                 }
             }
             else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
