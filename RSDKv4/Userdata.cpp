@@ -292,8 +292,7 @@ void InitUserdata()
         //ini.SetString("Dev", "DataFile", (char *)"ForceData.rsdk");
 		
 #if RETRO_PLATFORM == RETRO_ANDROID
-		StrCopy(Engine.dataFile[0], "Data.rsdk.xmf");
-		StrCopy(Engine.dataFile[1], "Data.rsdk");
+		StrCopy(Engine.dataFile[0], "Data.rsdk");
 #else
         StrCopy(Engine.dataFile[0], "ForceData.rsdk");
 #endif
@@ -439,8 +438,7 @@ void InitUserdata()
 
         //if (!ini.GetString("Dev", "DataFile", Engine.dataFile[0]))
 #if RETRO_PLATFORM == RETRO_ANDROID
-		StrCopy(Engine.dataFile[0], "Data.rsdk.xmf");
-		StrCopy(Engine.dataFile[1], "Data.rsdk");
+		StrCopy(Engine.dataFile[0], "Data.rsdk");
 #else
         StrCopy(Engine.dataFile[0], "ForceData.rsdk");
 #endif
