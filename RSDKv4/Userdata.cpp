@@ -289,14 +289,15 @@ void InitUserdata()
         Engine.startStage_Game = Engine.startStage;
 
         ini.SetBool("Dev", "UseHQModes", Engine.useHQModes = true);
-        ini.SetString("Dev", "DataFile", (char *)"ForceData.rsdk");
-        StrCopy(Engine.dataFile[0], "ForceData.rsdk");
+        //ini.SetString("Dev", "DataFile", (char *)"ForceData.rsdk");
 		
+#if RETRO_PLATFORM == RETRO_ANDROID
+		StrCopy(Engine.dataFile[0], "Data.rsdk.xmf");
+		StrCopy(Engine.dataFile[1], "Data.rsdk");
+#else
+        StrCopy(Engine.dataFile[0], "ForceData.rsdk");
+#endif
 		/*
-        if (!StrComp(Engine.dataFile[1], "")) {
-            ini.SetString("Dev", "DataFile2", (char *)"Data2.rsdk");
-            StrCopy(Engine.dataFile[1], "Data2.rsdk");
-        }
         if (!StrComp(Engine.dataFile[2], "")) {
             ini.SetString("Dev", "DataFile3", (char *)"Data3.rsdk");
             StrCopy(Engine.dataFile[2], "Data3.rsdk");
@@ -437,7 +438,12 @@ void InitUserdata()
         Engine.startStage_Game = Engine.startStage;
 
         //if (!ini.GetString("Dev", "DataFile", Engine.dataFile[0]))
-            StrCopy(Engine.dataFile[0], "ForceData.rsdk");
+#if RETRO_PLATFORM == RETRO_ANDROID
+		StrCopy(Engine.dataFile[0], "Data.rsdk.xmf");
+		StrCopy(Engine.dataFile[1], "Data.rsdk");
+#else
+        StrCopy(Engine.dataFile[0], "ForceData.rsdk");
+#endif
 		
 		/*
         if (!StrComp(Engine.dataFile[1], "")) {
@@ -717,8 +723,8 @@ void WriteSettings()
         "Determines if applicable rendering modes (such as 3D floor from special stages) will render in \"High Quality\" mode or standard mode");
     ini.SetBool("Dev", "UseHQModes", Engine.useHQModes);
 
-    ini.SetComment("Dev", "DataFileComment", "Determines where the first RSDK file will be loaded from");
-    ini.SetString("Dev", "DataFile", Engine.dataFile[0]);
+    //ini.SetComment("Dev", "DataFileComment", "Determines where the first RSDK file will be loaded from");
+    //ini.SetString("Dev", "DataFile", Engine.dataFile[0]);
 	
 	/*
     if (!StrComp(Engine.dataFile[1], "")) {
