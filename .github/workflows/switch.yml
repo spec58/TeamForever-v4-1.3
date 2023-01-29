@@ -21,11 +21,11 @@ jobs:
       run: make PLATFORM=Switch
     - name: Create directory structure
       run: |
-        mkdir -p bin/switch/sonicforever
-        mv bin/Switch/sonicforever.nro bin/switch/sonicforever
-        mkdir -p bin/switch/sonic2absolute
-        mv bin/Switch/sonic2absolute.nro bin/switch/sonic2absolute
+        mkdir -p bin/sd/Switch/SonicForever
+        mv bin/Switch/SonicForever.nro bin/sd/Switch/SonicForever
+        mkdir -p bin/sd/Switch/Sonic2Absolute
+        mv bin/Switch/Sonic2Absolute.nro bin/sd/Switch/Sonic2Absolute
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        path: bin/Switch/sd
+        path: bin/sd/Switch/
