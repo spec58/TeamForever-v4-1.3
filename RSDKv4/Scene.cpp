@@ -1581,6 +1581,10 @@ void SetPlayerScreenPosition(Entity *target)
         }
         cameraLockedY = false;
     }
+    else if (cameraLockedY) {
+        yPosDif    = 0;
+        cameraYPos = targetY;
+    }
     else if (targetY <= cameraYPos) {
         yPosDif = targetY - cameraYPos;
         if (targetY - cameraYPos <= 0) {
@@ -2119,6 +2123,7 @@ void SetPlayerHLockedScreenPosition(Entity *target)
     }
     else if (cameraLockedY) {
         camScroll = 0;
+        cameraYPos = targetY;
     }
     else if (targetY > cameraYPos) {
         camScroll = targetY - cameraYPos;
