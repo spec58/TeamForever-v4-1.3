@@ -71,6 +71,7 @@ extern GLuint renderbufferHiRes;
 #endif
 
 int InitRenderDevice();
+int ReInitRenderDevice();
 void FlipScreen();
 void ReleaseRenderDevice(bool refresh = false);
 

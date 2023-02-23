@@ -1238,6 +1238,7 @@ void SetWindowFullScreen(int *fullscreen, int *unused)
 
     Engine.isFullScreen    = *fullscreen;
     Engine.startFullScreen = *fullscreen;
+	SetFullScreen(Engine.isFullScreen);
 	ApplyWindowChanges();
 }
 
@@ -1283,9 +1284,13 @@ void ApplyWindowChanges()
             mesh->vertexCount = 0;
         }
     }
-
-    ReleaseRenderDevice(true);
-    InitRenderDevice();
+    ReleaseRenderDevice(true); 
+#if RETRO_USING_SDL2
+	int i = SDL_GetWindowDisplayIndex(Engine.window);
+	SDL_SetWindowSize(Engine.window, SCREEN_XSIZE_CONFIG * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale);    
+	SDL_SetWindowPosition(Engine.window, SDL_WINDOWPOS_CENTERED_DISPLAY(i), SDL_WINDOWPOS_CENTERED_DISPLAY(i));
+#endif
+    ReInitRenderDevice();	
 
     for (int i = 1; i < TEXTURE_COUNT; ++i) {
         if (StrLength(textureList[i].fileName)) {
