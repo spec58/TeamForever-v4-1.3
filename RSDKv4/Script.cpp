@@ -26,9 +26,9 @@ int jumpTableDataOffset = 0;
 
 #if RETRO_USE_COMPILER
 #if !RETRO_REV00
-#define COMMONALIAS_COUNT (0x6E)
+#define COMMONALIAS_COUNT (0x75)
 #else
-#define COMMONALIAS_COUNT (0x6D)
+#define COMMONALIAS_COUNT (0x74)
 #endif
 #define ALIAS_COUNT_TRIM (0xE0)
 #define ALIAS_COUNT      (COMMONALIAS_COUNT + ALIAS_COUNT_TRIM)
@@ -648,9 +648,16 @@ AliasInfo publicAliases[ALIAS_COUNT] = {
     AliasInfo("TILELAYER_3DSKY", "4"),
     AliasInfo("GROUP_ALL", "0"),
 	// These are for Engine.PlatformID
-	AliasInfo("PLATFORM_WIN", "0"),
-	AliasInfo("PLATFORM_ANDROID", "5"),
-	AliasInfo("PLATFORM_SWITCH", "9")
+	AliasInfo("RETRO_WIN", "0"),
+	AliasInfo("RETRO_OSX", "1"),
+	AliasInfo("RETRO_XBOX_360", "2"),
+	AliasInfo("RETRO_PS3", "3"),
+	AliasInfo("RETRO_iOS", "4"),
+	AliasInfo("RETRO_ANDROID", "5"),
+	AliasInfo("RETRO_WP7", "6"),
+	AliasInfo("RETRO_UWP", "7"),
+	AliasInfo("RETRO_LINUX", "8"),
+	AliasInfo("RETRO_SWITCH", "9")
 };
 AliasInfo privateAliases[ALIAS_COUNT_TRIM];
 int publicAliasCount  = 0;
