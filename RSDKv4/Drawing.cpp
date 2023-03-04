@@ -297,217 +297,6 @@ int InitRenderDevice()
     InitInputDevices();
 
     return 1;
-}int ReInitRenderDevice()
-{
-#if !RETRO_USE_ORIGINAL_CODE
-#if RETRO_USING_SDL2
-    
-#if RETRO_USING_OPENGL
-    
-
-#if RETRO_PLATFORM != RETRO_OSX // dude idk either you just gotta trust that this works
-#if RETRO_PLATFORM != RETRO_ANDROID
-   
-#else
-    
-#endif
-
-#endif
-#endif
-#if RETRO_DEVICETYPE == RETRO_MOBILE
-
-#endif
-
-
-#if !RETRO_USING_OPENGL
-    Engine.renderer = SDL_CreateRenderer(Engine.window, -1, SDL_RENDERER_ACCELERATED);
-
-    if (!Engine.renderer) {
-        PrintLog("ERROR: failed to create renderer!");
-        return 0;
-    }
-
-    SDL_RenderSetLogicalSize(Engine.renderer, SCREEN_XSIZE, SCREEN_YSIZE);
-    SDL_SetRenderDrawBlendMode(Engine.renderer, SDL_BLENDMODE_BLEND);
-
-#if RETRO_SOFTWARE_RENDER
-    Engine.screenBuffer = SDL_CreateTexture(Engine.renderer, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE, SCREEN_YSIZE);
-
-    if (!Engine.screenBuffer) {
-        PrintLog("ERROR: failed to create screen buffer!\nerror msg: %s", SDL_GetError());
-        return 0;
-    }
-
-    Engine.screenBuffer2x =
-        SDL_CreateTexture(Engine.renderer, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, SCREEN_XSIZE * 2, SCREEN_YSIZE * 2);
-
-    if (!Engine.screenBuffer2x) {
-        PrintLog("ERROR: failed to create screen buffer HQ!\nerror msg: %s", SDL_GetError());
-        return 0;
-    }
-#endif
-#endif
-
-    if (Engine.borderless) {
-        SDL_RestoreWindow(Engine.window);
-        SDL_SetWindowBordered(Engine.window, SDL_FALSE);
-    }
-
-    SDL_DisplayMode disp;
-    if (SDL_GetDisplayMode(0, 0, &disp) == 0) {
-        Engine.screenRefreshRate = disp.refresh_rate;
-    }
-
-#endif
-
-#if RETRO_USING_SDL1
-    SDL_Init(SDL_INIT_EVERYTHING);
-
-    byte flags = 0;
-#if RETRO_USING_OPENGL
-    flags |= SDL_OPENGL;
-#endif
-
-    Engine.windowSurface = SDL_SetVideoMode(SCREEN_XSIZE * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale, 32, SDL_SWSURFACE | flags);
-    if (!Engine.windowSurface) {
-        PrintLog("ERROR: failed to create window!\nerror msg: %s", SDL_GetError());
-        return 0;
-    }
-    // Set the window caption
-    SDL_WM_SetCaption(gameTitle, NULL);
-
-    Engine.screenBuffer =
-        SDL_CreateRGBSurface(0, SCREEN_XSIZE * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale, 16, 0xF800, 0x7E0, 0x1F, 0x00);
-
-    if (!Engine.screenBuffer) {
-        PrintLog("ERROR: failed to create screen buffer!\nerror msg: %s", SDL_GetError());
-        return 0;
-    }
-
-    /*Engine.screenBuffer2x = SDL_SetVideoMode(SCREEN_XSIZE * 2, SCREEN_YSIZE * 2, 16, SDL_SWSURFACE | flags);
-    if (!Engine.screenBuffer2x) {
-        PrintLog("ERROR: failed to create screen buffer HQ!\nerror msg: %s", SDL_GetError());
-        return 0;
-    }*/
-
-    if (Engine.startFullScreen) {
-        Engine.windowSurface =
-            SDL_SetVideoMode(SCREEN_XSIZE * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale, 16, SDL_SWSURFACE | SDL_FULLSCREEN | flags);
-        SDL_ShowCursor(SDL_FALSE);
-        Engine.isFullScreen = true;
-    }
-
-    // TODO: not supported in 1.2?
-    if (Engine.borderless) {
-        // SDL_RestoreWindow(Engine.window);
-        // SDL_SetWindowBordered(Engine.window, SDL_FALSE);
-    }
-
-    // SDL_SetWindowPosition(Engine.window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-
-    Engine.useHQModes = false; // disabled
-    Engine.borderless = false; // disabled
-#endif
-
-#if RETRO_USING_OPENGL
-
-    // Init GL
-    Engine.glContext = SDL_GL_CreateContext(Engine.window);
-
-    SDL_GL_SetSwapInterval(Engine.vsync ? 1 : 0);
-
-#if RETRO_PLATFORM == RETRO_SWITCH
-    // Should probably add error
-    gladLoadGL();
-#elif RETRO_PLATFORM != RETRO_ANDROID && RETRO_PLATFORM != RETRO_OSX
-    GLenum err = glewInit();
-    if (err != GLEW_OK) {
-        PrintLog("glew init error:");
-        PrintLog((const char *)glewGetErrorString(err));
-        return false;
-    }
-#endif
-
-    displaySettings.unknown2 = 0;
-
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-
-    glDisable(GL_LIGHTING);
-    glEnable(GL_TEXTURE_2D);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_DITHER);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDisable(GL_BLEND);
-    glEnable(GL_CULL_FACE);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-#if RETRO_PLATFORM == RETRO_ANDROID
-    Engine.windowScale     = 1;
-    displaySettings.width  = SCREEN_XSIZE;
-    displaySettings.height = SCREEN_YSIZE;
-#else
-    displaySettings.width  = SCREEN_XSIZE_CONFIG * Engine.windowScale;
-    displaySettings.height = SCREEN_YSIZE * Engine.windowScale;
-#endif
-
-    textureList[0].id = -1;
-    SetupViewport();
-
-    ResetRenderStates();
-    SetupDrawIndexList();
-
-    for (int c = 0; c < 0x10000; ++c) {
-        int r               = (c & 0b1111100000000000) >> 8;
-        int g               = (c & 0b0000011111100000) >> 3;
-        int b               = (c & 0b0000000000011111) << 3;
-        gfxPalette16to32[c] = (0xFF << 24) | (b << 16) | (g << 8) | (r << 0);
-    }
-
-    float lightAmbient[4] = { 2.0, 2.0, 2.0, 1.0 };
-    float lightDiffuse[4] = { 1.0, 1.0, 1.0, 1.0 };
-    float lightPos[4]     = { 0.0, 0.0, 0.0, 1.0 };
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-    glEnable(GL_LIGHT0);
-
-#if RETRO_PLATFORM == RETRO_ANDROID
-    Engine.startFullScreen = true;
-#endif
-#endif
-
-#if RETRO_PLATFORM != RETRO_ANDROID
-    SetScreenDimensions(SCREEN_XSIZE_CONFIG * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale);
-#else
-    SetScreenDimensions(SCREEN_XSIZE, SCREEN_YSIZE);
-#endif
-
-#if RETRO_SOFTWARE_RENDER
-    Engine.frameBuffer   = new ushort[GFX_LINESIZE * SCREEN_YSIZE];
-    Engine.frameBuffer2x = new ushort[GFX_LINESIZE_DOUBLE * (SCREEN_YSIZE * 2)];
-    memset(Engine.frameBuffer, 0, (GFX_LINESIZE * SCREEN_YSIZE) * sizeof(ushort));
-    memset(Engine.frameBuffer2x, 0, GFX_LINESIZE_DOUBLE * (SCREEN_YSIZE * 2) * sizeof(ushort));
-#endif
-    Engine.texBuffer = new uint[GFX_LINESIZE * SCREEN_YSIZE];
-    memset(Engine.texBuffer, 0, (GFX_LINESIZE * SCREEN_YSIZE) * sizeof(uint));
-
-#endif
-
-    if (Engine.startFullScreen) {
-        SetFullScreen(true);
-    }
-
-    OBJECT_BORDER_X2 = SCREEN_XSIZE + 0x80;
-    // OBJECT_BORDER_Y2 = SCREEN_YSIZE + 0x100;
-    OBJECT_BORDER_X4 = SCREEN_XSIZE + 0x20;
-    // OBJECT_BORDER_Y4 = SCREEN_YSIZE + 0x80;
-
-    InitInputDevices();
-
-    return 1;
 }
 void FlipScreen()
 {
@@ -744,10 +533,10 @@ void FlipScreen()
 }
 void ReleaseRenderDevice(bool refresh)
 {
-	//if (!refresh) {
+	if (!refresh) {
 		ClearMeshData();
 		ClearTextures(false);
-	//}
+	}
 
 #if !RETRO_USE_ORIGINAL_CODE
 #if RETRO_SOFTWARE_RENDER
@@ -776,8 +565,7 @@ void ReleaseRenderDevice(bool refresh)
 #if !RETRO_USING_OPENGL
     SDL_DestroyRenderer(Engine.renderer);
 #endif
-	if (!refresh)
-		SDL_DestroyWindow(Engine.window);
+    SDL_DestroyWindow(Engine.window);
 #endif
 #endif
 }
@@ -1197,11 +985,10 @@ void SetFullScreen(bool fs)
         Engine.windowSurface = SDL_SetVideoMode(SCREEN_XSIZE * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale, 16, SDL_SWSURFACE);
         SDL_ShowCursor(SDL_TRUE);
 #elif RETRO_USING_SDL2
-		int i = SDL_GetWindowDisplayIndex(Engine.window);
         SDL_SetWindowFullscreen(Engine.window, false);
         SDL_ShowCursor(SDL_TRUE);
         SDL_SetWindowSize(Engine.window, SCREEN_XSIZE_CONFIG * Engine.windowScale, SCREEN_YSIZE * Engine.windowScale);
-        SDL_SetWindowPosition(Engine.window, SDL_WINDOWPOS_CENTERED_DISPLAY(i), SDL_WINDOWPOS_CENTERED_DISPLAY(i));
+        SDL_SetWindowPosition(Engine.window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
         SDL_RestoreWindow(Engine.window);
 
         displaySettings.width   = SCREEN_XSIZE_CONFIG * Engine.windowScale;
