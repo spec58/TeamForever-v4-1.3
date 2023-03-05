@@ -10,6 +10,7 @@ ushort tintLookupTable[0x10000];
 
 bool windowCreated = false;
 
+int CURRENT_DISP_SCREEN = 0;
 int SCREEN_XSIZE_CONFIG = 426;
 int SCREEN_XSIZE        = 426;
 int SCREEN_CENTERX      = 426 / 2;
@@ -100,7 +101,7 @@ int InitRenderDevice()
 #endif
 
     SCREEN_CENTERX = SCREEN_XSIZE / 2;
-    Engine.window  = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_XSIZE * Engine.windowScale,
+    Engine.window  = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED_DISPLAY(CURRENT_DISP_SCREEN), SDL_WINDOWPOS_CENTERED_DISPLAY(CURRENT_DISP_SCREEN), SCREEN_XSIZE * Engine.windowScale,
                                      SCREEN_YSIZE * Engine.windowScale, SDL_WINDOW_ALLOW_HIGHDPI | flags);
 									 
     if (!Engine.window) {
@@ -537,6 +538,8 @@ void ReleaseRenderDevice(bool refresh)
 		ClearMeshData();
 		ClearTextures(false);
 	}
+	else
+		CURRENT_DISP_SCREEN = SDL_GetWindowDisplayIndex(Engine.window);
 
 #if !RETRO_USE_ORIGINAL_CODE
 #if RETRO_SOFTWARE_RENDER

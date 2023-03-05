@@ -1228,7 +1228,7 @@ void SetWindowScaleMode(int *mode, int *unused)
         return;
 
     Engine.scalingMode = *mode;
-	ApplyWindowChanges();
+	//ApplyWindowChanges();
 }
 
 void SetWindowFullScreen(int *fullscreen, int *unused)
@@ -1283,7 +1283,6 @@ void ApplyWindowChanges()
             mesh->vertexCount = 0;
         }
     }
-
     ReleaseRenderDevice(true);
     InitRenderDevice();
 
