@@ -264,8 +264,6 @@ void IniParser::Write(const char *filename, bool addPath)
             sprintf(pathBuffer, "%s/%s", getResourcesPath(), filename);
         else
             sprintf(pathBuffer, "%s", filename);
-#elif RETRO_PLATFORM == RETRO_OSX
-        sprintf(pathBuffer, "%s/%s", gamePath, filename);
 #else
         sprintf(pathBuffer, "%s", filename);
 #endif

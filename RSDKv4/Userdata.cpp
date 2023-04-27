@@ -202,8 +202,10 @@ void InitUserdata()
 #endif
 
 #if RETRO_PLATFORM == RETRO_OSX
-    sprintf(gamePath, "%s/RSDKv4", getResourcesPath());
-    sprintf(modsPath, "%s/RSDKv4/", getResourcesPath());
+    char macBuffer[0x100];
+    getResourcesPath(macBuffer, sizeof(macBuffer));
+    snprintf(gamePath, sizeof(macBuffer), "%s/", macBuffer);
+    snprintf(modsPath, sizeof(macBuffer), "%s/", macBuffer);
 
     mkdir(gamePath, 0777);
 #elif RETRO_PLATFORM == RETRO_ANDROID
