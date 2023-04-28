@@ -260,7 +260,7 @@ void InitUserdata()
         ini.SetBool("Dev", "UseHQModes", Engine.useHQModes = true);
         //ini.SetString("Dev", "DataFile", (char *)"ForceData.rsdk");
 		
-#if RETRO_PLATFORM == RETRO_ANDROID
+#if RETRO_PLATFORM == RETRO_ANDROID || RETRO_PLATFORM == RETRO_OSX
 		StrCopy(Engine.dataFile[0], "Data.rsdk");
 #else
         StrCopy(Engine.dataFile[0], "ForceData.rsdk");
@@ -406,7 +406,7 @@ void InitUserdata()
         Engine.startStage_Game = Engine.startStage;
 
         //if (!ini.GetString("Dev", "DataFile", Engine.dataFile[0]))
-#if RETRO_PLATFORM == RETRO_ANDROID
+#if RETRO_PLATFORM == RETRO_ANDROID || RETRO_PLATFORM == RETRO_OSX
 		StrCopy(Engine.dataFile[0], "Data.rsdk");
 #else
         StrCopy(Engine.dataFile[0], "ForceData.rsdk");
