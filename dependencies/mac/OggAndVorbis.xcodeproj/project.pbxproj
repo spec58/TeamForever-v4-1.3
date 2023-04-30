@@ -569,6 +569,7 @@
 				OTHER_CFLAGS = "-fPIC";
 				PRODUCT_BUNDLE_IDENTIFIER = org.xiph.ogg;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -617,6 +618,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.xiph.ogg;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -665,6 +667,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.xiph.ogg;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -713,6 +716,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.xiph.ogg;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
