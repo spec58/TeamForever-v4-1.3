@@ -82,6 +82,7 @@
 		9E1BF03629FCAFE400A1C6D8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EA0885129FA11AF00163B50 /* AppKit.framework */; };
 		9E1BF03729FCAFE400A1C6D8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C975E69826E3190B00F09AD4 /* OpenGL.framework */; };
 		9E1BF03929FCB18900A1C6D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C962193625898B0A00B47AB3 /* Assets.xcassets */; };
+		9E372A0D29FF1F0B00A22DAD /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E03820729EE36AE00629FE3 /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,13 +106,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = A7D88D1523E24BED00DCD162;
 			remoteInfo = "Framework-tvOS";
-		};
-		9E03820C29EE36AE00629FE3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9E0381F829EE36AE00629FE3 /* SDL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E2D187CF28A5673500D2B4F1;
-			remoteInfo = "xcFramework-iOS";
 		};
 		9E03820E29EE36AE00629FE3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -161,6 +155,27 @@
 			proxyType = 2;
 			remoteGlobalIDString = BECDF6BE0761BA81005FE872;
 			remoteInfo = "Standard DMG";
+		};
+		9E372A0729FF1F0B00A22DAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9E0381F829EE36AE00629FE3 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB8C23E4C74400529352;
+			remoteInfo = hidapi;
+		};
+		9E372A0929FF1F0B00A22DAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9E0381F829EE36AE00629FE3 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB4923E399AC00529352;
+			remoteInfo = "hidapi-iOS";
+		};
+		9E372A0B29FF1F0B00A22DAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9E0381F829EE36AE00629FE3 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A75FDB6E23E3A2C900529352;
+			remoteInfo = "hidapi-tvOS";
 		};
 		9EA0883C29FA0CB600163B50 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -345,6 +360,7 @@
 				9E1BF03429FCAFE400A1C6D8 /* SDL2.framework in Frameworks */,
 				9E1BF03629FCAFE400A1C6D8 /* AppKit.framework in Frameworks */,
 				9E1BF03029FCAFE400A1C6D8 /* Ogg.framework in Frameworks */,
+				9E372A0D29FF1F0B00A22DAD /* SDL2.framework in Frameworks */,
 				9E1BF03729FCAFE400A1C6D8 /* OpenGL.framework in Frameworks */,
 				9E1BF03229FCAFE400A1C6D8 /* Vorbis.framework in Frameworks */,
 			);
@@ -368,7 +384,6 @@
 				9E03820729EE36AE00629FE3 /* SDL2.framework */,
 				9E03820929EE36AE00629FE3 /* SDL2.framework */,
 				9E03820B29EE36AE00629FE3 /* SDL2.framework */,
-				9E03820D29EE36AE00629FE3 /* SDL2.framework */,
 				9E03820F29EE36AE00629FE3 /* libSDL2.a */,
 				9E03821129EE36AE00629FE3 /* libSDL2.a */,
 				9E03821329EE36AE00629FE3 /* libSDL2.a */,
@@ -376,6 +391,9 @@
 				9E03821729EE36AE00629FE3 /* libSDL2.dylib */,
 				9E03821929EE36AE00629FE3 /* libSDL2.dylib */,
 				9E03821B29EE36AE00629FE3 /* SDL2 */,
+				9E372A0829FF1F0B00A22DAD /* hidapi.framework */,
+				9E372A0A29FF1F0B00A22DAD /* hidapi.framework */,
+				9E372A0C29FF1F0B00A22DAD /* hidapi.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -683,13 +701,6 @@
 			remoteRef = 9E03820A29EE36AE00629FE3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9E03820D29EE36AE00629FE3 /* SDL2.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SDL2.framework;
-			remoteRef = 9E03820C29EE36AE00629FE3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		9E03820F29EE36AE00629FE3 /* libSDL2.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -737,6 +748,27 @@
 			fileType = "compiled.mach-o.executable";
 			path = SDL2;
 			remoteRef = 9E03821A29EE36AE00629FE3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9E372A0829FF1F0B00A22DAD /* hidapi.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = hidapi.framework;
+			remoteRef = 9E372A0729FF1F0B00A22DAD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9E372A0A29FF1F0B00A22DAD /* hidapi.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = hidapi.framework;
+			remoteRef = 9E372A0929FF1F0B00A22DAD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9E372A0C29FF1F0B00A22DAD /* hidapi.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = hidapi.framework;
+			remoteRef = 9E372A0B29FF1F0B00A22DAD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9EA0883D29FA0CB600163B50 /* Ogg.framework */ = {
