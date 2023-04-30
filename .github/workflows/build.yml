@@ -194,8 +194,12 @@ jobs:
       - name: Build RSDKv4
         run: |
           xcodebuild -project RSDKv4.xcodeproj -scheme RSDKv4 DSTROOT="./build" archive
+      - name: Zip the app ourselves (So it can still run)
+        run: |
+          cd ./build/Applications/
+          zip -r RSDKv4.zip ./RSDKv4.app/
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3
         with:
           name: v4-mac-universal
-          path: build/Applications
+          path: build/Applications/RSDKv5.zip
