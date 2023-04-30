@@ -166,3 +166,36 @@ jobs:
         with:
           name: v4-linux
           path: bin
+
+  v4-macOS:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          submodules: recursive
+      - name: Download libogg and libvorbis for easier includes
+        run: |
+          Invoke-WebRequest -Uri "https://ftp.osuosl.org/pub/xiph/releases/ogg/libogg-1.3.5.zip" -OutFile "libogg.zip"
+          Expand-Archive -Path libogg.zip -DestinationPath ./dependencies/mac/
+          Rename-Item ./dependencies/mac/libogg-1.3.5 libogg
+          Invoke-WebRequest -Uri "https://ftp.osuosl.org/pub/xiph/releases/vorbis/libvorbis-1.3.7.zip" -OutFile "libvorbis.zip"
+          Expand-Archive -Path libvorbis.zip -DestinationPath ./dependencies/mac/
+          Rename-Item ./dependencies/mac/libvorbis-1.3.7 libvorbis
+      - name: Download SDL2
+        run: |
+          Invoke-WebRequest -Uri "https://libsdl.org/release/SDL2-2.0.14.zip" -OutFile "SDL2.zip"
+          Expand-Archive -Path SDL2.zip -DestinationPath ./dependencies/mac/
+          Rename-Item ./dependencies/mac/SDL2-2.0.14 SDL2
+      - name: Generate Vorbis headers
+        working-directory: ./dependencies/mac/libogg/
+        run: |
+          ./configure
+      - name: Build RSDKv4
+        run: |
+          xcodebuild -project RSDKv4.xcodeproj -scheme RSDKv4 DSTROOT="./build" archive
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: v4-mac-universal
+          path: build/Applications
