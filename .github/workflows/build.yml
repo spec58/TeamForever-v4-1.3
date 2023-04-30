@@ -176,17 +176,17 @@ jobs:
           submodules: recursive
       - name: Download libogg and libvorbis for easier includes
         run: |
-          Invoke-WebRequest -Uri "https://ftp.osuosl.org/pub/xiph/releases/ogg/libogg-1.3.5.zip" -OutFile "libogg.zip"
-          Expand-Archive -Path libogg.zip -DestinationPath ./dependencies/mac/
-          Rename-Item ./dependencies/mac/libogg-1.3.5 libogg
-          Invoke-WebRequest -Uri "https://ftp.osuosl.org/pub/xiph/releases/vorbis/libvorbis-1.3.7.zip" -OutFile "libvorbis.zip"
-          Expand-Archive -Path libvorbis.zip -DestinationPath ./dependencies/mac/
-          Rename-Item ./dependencies/mac/libvorbis-1.3.7 libvorbis
+          curl "https://ftp.osuosl.org/pub/xiph/releases/ogg/libogg-1.3.5.zip" --output "libogg.zip"
+          unzip libogg.zip -d ./dependencies/mac/
+          mv ./dependencies/mac/libogg-1.3.5 ./dependencies/mac/libogg
+          curl "https://ftp.osuosl.org/pub/xiph/releases/vorbis/libvorbis-1.3.7.zip" --output "libvorbis.zip"
+          unzip libvorbis.zip -d ./dependencies/mac/
+          mv ./dependencies/mac/libvorbis-1.3.7 ./dependencies/mac/libvorbis
       - name: Download SDL2
         run: |
-          Invoke-WebRequest -Uri "https://libsdl.org/release/SDL2-2.0.14.zip" -OutFile "SDL2.zip"
-          Expand-Archive -Path SDL2.zip -DestinationPath ./dependencies/mac/
-          Rename-Item ./dependencies/mac/SDL2-2.0.14 SDL2
+          curl "https://libsdl.org/release/SDL2-2.0.14.zip" --output "SDL2.zip"
+          unzip SDL2.zip -d ./dependencies/mac/
+          mv ./dependencies/mac/SDL2-2.0.14 ./dependencies/mac/SDL2
       - name: Generate Vorbis headers
         working-directory: ./dependencies/mac/libogg/
         run: |
