@@ -194,11 +194,8 @@ jobs:
       - name: Build RSDKv4
         run: |
           xcodebuild -project RSDKv4.xcodeproj -scheme RSDKv4 DSTROOT="./build" archive
-      - name: Package into DMG to retain execute permissions
-        run: |
-          hdiutil create -volname RSDKv4 -srcfolder ./build/Applications ./build/RSDKv4.dmg
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: v4-mac-universal
-          path: build/RSDKv4.dmg
+          name: v4-mac
+          path: build/Applications/
