@@ -202,4 +202,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: v4-mac-universal
-          path: build/Applications/RSDKv5.zip
+          path: build/Applications/RSDKv4.zip
