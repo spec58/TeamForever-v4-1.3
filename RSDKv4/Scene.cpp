@@ -617,7 +617,7 @@ void LoadStageFiles(void)
             CloseFile();
         }
 
-        if (loadGlobalScripts && LoadFile("Data/Game/GameConfig.bin", &info)) {
+        if (LoadFile("Data/Game/GameConfig.bin", &info)) {
             FileRead(&fileBuffer, 1);
             FileRead(&strBuffer, fileBuffer);
             FileRead(&fileBuffer, 1);
@@ -629,82 +629,84 @@ void LoadStageFiles(void)
                 SetPaletteEntry(-1, c, buf[0], buf[1], buf[2]);
             }
 
-            byte globalObjectCount = 0;
-            FileRead(&globalObjectCount, 1);
-            for (byte i = 0; i < globalObjectCount; ++i) {
-                FileRead(&fileBuffer2, 1);
-                FileRead(strBuffer, fileBuffer2);
-                strBuffer[fileBuffer2] = 0;
-                SetObjectTypeName(strBuffer, scriptID + i);
-            }
+			if (loadGlobalScripts) {
+				byte globalObjectCount = 0;
+				FileRead(&globalObjectCount, 1);
+				for (byte i = 0; i < globalObjectCount; ++i) {
+					FileRead(&fileBuffer2, 1);
+					FileRead(strBuffer, fileBuffer2);
+					strBuffer[fileBuffer2] = 0;
+					SetObjectTypeName(strBuffer, scriptID + i);
+				}
 
 #if RETRO_USE_MOD_LOADER && RETRO_USE_COMPILER
-            for (byte i = 0; i < modObjCount && loadGlobalScripts; ++i) {
-                SetObjectTypeName(modTypeNames[i], globalObjectCount + i + 1);
-            }
+				for (byte i = 0; i < modObjCount && loadGlobalScripts; ++i) {
+					SetObjectTypeName(modTypeNames[i], globalObjectCount + i + 1);
+				}
 #endif
 
 #if RETRO_USE_COMPILER
 #if !RETRO_USE_ORIGINAL_CODE
-            bool bytecodeExists = false;
-            FileInfo bytecodeInfo;
-            GetFileInfo(&bytecodeInfo);
-            CloseFile();
-            if (LoadFile("Bytecode/GlobalCode.bin", &info)) {
-                bytecodeExists = true;
-                CloseFile();
-            }
-            SetFileInfo(&bytecodeInfo);
+				bool bytecodeExists = false;
+				FileInfo bytecodeInfo;
+				GetFileInfo(&bytecodeInfo);
+				CloseFile();
+				if (LoadFile("Bytecode/GlobalCode.bin", &info)) {
+					bytecodeExists = true;
+					CloseFile();
+				}
+				SetFileInfo(&bytecodeInfo);
 
-            if (bytecodeExists && !forceUseScripts) {
+				if (bytecodeExists && !forceUseScripts) {
 #else
-            if (Engine.usingBytecode) {
+				if (Engine.usingBytecode) {
 #endif
-                GetFileInfo(&infoStore);
-                CloseFile();
-                LoadBytecode(4, scriptID);
-                scriptID += globalObjectCount;
-                SetFileInfo(&infoStore);
-            }
-            else {
-                for (byte i = 0; i < globalObjectCount; ++i) {
-                    FileRead(&fileBuffer2, 1);
-                    FileRead(strBuffer, fileBuffer2);
-                    strBuffer[fileBuffer2] = 0;
-                    GetFileInfo(&infoStore);
-                    CloseFile();
-                    ParseScriptFile(strBuffer, scriptID++);
-                    SetFileInfo(&infoStore);
-                    if (Engine.gameMode == ENGINE_SCRIPTERROR)
-                        return;
-                }
-            }
+					GetFileInfo(&infoStore);
+					CloseFile();
+					LoadBytecode(4, scriptID);
+					scriptID += globalObjectCount;
+					SetFileInfo(&infoStore);
+				}
+				else {
+					for (byte i = 0; i < globalObjectCount; ++i) {
+						FileRead(&fileBuffer2, 1);
+						FileRead(strBuffer, fileBuffer2);
+						strBuffer[fileBuffer2] = 0;
+						GetFileInfo(&infoStore);
+						CloseFile();
+						ParseScriptFile(strBuffer, scriptID++);
+						SetFileInfo(&infoStore);
+						if (Engine.gameMode == ENGINE_SCRIPTERROR)
+							return;
+					}
+				}
 #else
-            GetFileInfo(&infoStore);
-            CloseFile();
-            LoadBytecode(4, scriptID);
-            scriptID += globalObjectCount;
-            SetFileInfo(&infoStore);
+				GetFileInfo(&infoStore);
+				CloseFile();
+				LoadBytecode(4, scriptID);
+				scriptID += globalObjectCount;
+				SetFileInfo(&infoStore);
 #endif
-            CloseFile();
+				CloseFile();
 
 #if RETRO_USE_MOD_LOADER
-            Engine.LoadXMLPalettes();
+				Engine.LoadXMLPalettes();
 #endif
 
 #if RETRO_USE_MOD_LOADER && RETRO_USE_COMPILER
-            globalObjCount = globalObjectCount;
-            for (byte i = 0; i < modObjCount && loadGlobalScripts; ++i) {
-                SetObjectTypeName(modTypeNames[i], scriptID);
+				globalObjCount = globalObjectCount;
+				for (byte i = 0; i < modObjCount && loadGlobalScripts; ++i) {
+					SetObjectTypeName(modTypeNames[i], scriptID);
 
-                GetFileInfo(&infoStore);
-                CloseFile();
-                ParseScriptFile(modScriptPaths[i], scriptID++);
-                SetFileInfo(&infoStore);
-                if (Engine.gameMode == ENGINE_SCRIPTERROR)
-                    return;
-            }
+					GetFileInfo(&infoStore);
+					CloseFile();
+					ParseScriptFile(modScriptPaths[i], scriptID++);
+					SetFileInfo(&infoStore);
+					if (Engine.gameMode == ENGINE_SCRIPTERROR)
+						return;
+				}
 #endif
+			}
         }
 
         if (LoadStageFile("StageConfig.bin", stageListPosition, &info)) {
