@@ -202,8 +202,10 @@ void InitUserdata()
 #endif
 
 #if RETRO_PLATFORM == RETRO_OSX
-    sprintf(gamePath, "%s/RSDKv4", getResourcesPath());
-    sprintf(modsPath, "%s/RSDKv4/", getResourcesPath());
+    char macBuffer[0x100];
+    getResourcesPath(macBuffer, sizeof(macBuffer));
+    snprintf(gamePath, sizeof(macBuffer), "%s/", macBuffer);
+    snprintf(modsPath, sizeof(macBuffer), "%s/", macBuffer);
 
     mkdir(gamePath, 0777);
 #elif RETRO_PLATFORM == RETRO_ANDROID
@@ -258,7 +260,7 @@ void InitUserdata()
         ini.SetBool("Dev", "UseHQModes", Engine.useHQModes = true);
         //ini.SetString("Dev", "DataFile", (char *)"ForceData.rsdk");
 		
-#if RETRO_PLATFORM == RETRO_ANDROID
+#if RETRO_PLATFORM == RETRO_ANDROID || RETRO_PLATFORM == RETRO_OSX
 		StrCopy(Engine.dataFile[0], "Data.rsdk");
 #else
         StrCopy(Engine.dataFile[0], "ForceData.rsdk");
@@ -406,7 +408,7 @@ void InitUserdata()
         Engine.startStage_Game = Engine.startStage;
 
         //if (!ini.GetString("Dev", "DataFile", Engine.dataFile[0]))
-#if RETRO_PLATFORM == RETRO_ANDROID
+#if RETRO_PLATFORM == RETRO_ANDROID || RETRO_PLATFORM == RETRO_OSX
 		StrCopy(Engine.dataFile[0], "Data.rsdk");
 #else
         StrCopy(Engine.dataFile[0], "ForceData.rsdk");

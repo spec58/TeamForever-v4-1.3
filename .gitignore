@@ -281,3 +281,5 @@ android/local.properties
 .flatpak-builder
 flatpak/*.apk
 build-dir
+dependencies/mac/OggAndVorbis.xcodeproj/project.xcworkspace/xcuserdata
+dependencies/mac/SDL2

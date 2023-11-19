@@ -28,9 +28,7 @@ bool CheckRSDKFile(const char *filePath)
 
     char filePathBuffer[0x100];
 #if RETRO_PLATFORM == RETRO_OSX
-    char pathBuf[0x100];
-    sprintf(pathBuf, "%s/%s", gamePath, filePathBuffer);
-    sprintf(filePathBuffer, "%s", pathBuf);
+    sprintf(filePathBuffer, "%s/%s", gamePath, filePath);
 #else
     sprintf(filePathBuffer, "%s", filePath);
 #endif
