@@ -540,10 +540,11 @@ const FunctionInfo functions[] = {
 AliasInfo publicAliases[ALIAS_COUNT] = {
     AliasInfo("true", "1"),
     AliasInfo("false", "0"),
-    AliasInfo("FX_SCALE", "0"),
-    AliasInfo("FX_ROTATE", "1"),
-    AliasInfo("FX_ROTOZOOM", "2"),
-    AliasInfo("FX_INK", "3"),
+    AliasInfo("FX_FLIP", "1"),
+    AliasInfo("FX_ROTATE", "2"),
+    AliasInfo("FX_SCALE", "4"),
+    AliasInfo("FX_ROTOZOOM", "6"),
+    AliasInfo("FX_INK", "8"),
     AliasInfo("PRESENTATION_STAGE", "0"),
     AliasInfo("REGULAR_STAGE", "1"),
     AliasInfo("BONUS_STAGE", "2"),
@@ -557,7 +558,6 @@ AliasInfo publicAliases[ALIAS_COUNT] = {
     AliasInfo("MAT_WORLD", "0"),
     AliasInfo("MAT_VIEW", "1"),
     AliasInfo("MAT_TEMP", "2"),
-    AliasInfo("FX_FLIP", "5"),
     AliasInfo("FACING_LEFT", "1"),
     AliasInfo("FACING_RIGHT", "0"),
     AliasInfo("FLIP_NONE", "0"),
@@ -4530,6 +4530,12 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
             case FUNC_DRAWSPRITEFX:
                 opcodeSize  = 0;
                 spriteFrame = &scriptFrames[scriptInfo->frameListOffset + scriptEng.operands[0]];
+				DrawSpriteAllEffect(entity->direction, (scriptEng.operands[2] >> 16) - xScrollOffset,
+                                           (scriptEng.operands[3] >> 16) - yScrollOffset, -spriteFrame->pivotX, -spriteFrame->pivotY,
+                                           spriteFrame->sprX, spriteFrame->sprY, spriteFrame->width, spriteFrame->height, entity->rotation,
+                                           entity->scale, scriptInfo->spriteSheetID, entity->alpha, entity->inkEffect, scriptEng.operands[1]);
+				break;
+				/*
                 switch (scriptEng.operands[1]) {
                     default: break;
                     case FX_SCALE:
@@ -4625,9 +4631,15 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                         break;
                 }
                 break;
+				*/
             case FUNC_DRAWSPRITESCREENFX:
                 opcodeSize  = 0;
                 spriteFrame = &scriptFrames[scriptInfo->frameListOffset + scriptEng.operands[0]];
+				DrawSpriteAllEffect(entity->direction, scriptEng.operands[2], scriptEng.operands[3], -spriteFrame->pivotX,
+                                           -spriteFrame->pivotY, spriteFrame->sprX, spriteFrame->sprY, spriteFrame->width, spriteFrame->height,
+                                           entity->rotation, entity->scale, scriptInfo->spriteSheetID, entity->alpha, entity->inkEffect, scriptEng.operands[1]);
+				break;
+				/*
                 switch (scriptEng.operands[1]) {
                     default: break;
                     case FX_SCALE:
@@ -4712,6 +4724,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                         break;
                 }
                 break;
+				*/
             case FUNC_LOADANIMATION:
                 opcodeSize           = 0;
                 scriptInfo->animFile = AddAnimationFile(scriptText);
