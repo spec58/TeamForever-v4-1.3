@@ -3851,14 +3851,17 @@ void DrawSpriteAllEffect(int direction, int XPos, int YPos, int pivotX, int pivo
 {
 #if RETRO_SOFTWARE_RENDER
 	//check flags
-	if (flags && FX_INK == 0)
+	if ((flags & FX_INK) == 0)
 		ink = INK_NONE;
-	if (flags && FX_SCALE == 0)
+	if ((flags & FX_SCALE) == 0)
 		scale = 0x200;
-	if (flags && FX_ROTATE == 0)
+	if ((flags & FX_ROTATE) == 0)
 		rotation = 0;
-	if (flags && 3 == 0)
+	if ((flags & 3) == 0)
 		direction = FLIP_NONE;
+	
+	if ((ink > INK_NONE) && (alpha == 0))
+		return;
 	
 	if (alpha > 0xFF)
         alpha = 0xFF;
