@@ -1,4 +1,4 @@
-package com.decomp.rsdkv4;
+package com.decomp.s2a;
 
 import android.Manifest;
 import android.content.Context;
@@ -9,7 +9,7 @@ import java.io.File;
 import org.libsdl.app.*;
 
 
-public class RSDKv4 extends SDLActivity {
+public class Absolute extends SDLActivity {
     @Override
     protected void onStart() {
         super.onStart();
