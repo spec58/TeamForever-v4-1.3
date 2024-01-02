@@ -15,7 +15,10 @@
 #define FX_TINT (16)
 enum FlipFlags { FLIP_NONE, FLIP_X, FLIP_Y, FLIP_XY };
 enum InkFlags { INK_NONE, INK_BLEND, INK_ALPHA, INK_ADD, INK_SUB };
-//enum DrawFXFlags { FX_SCALE, FX_ROTATE, FX_ROTOZOOM, FX_INK, FX_TINT, FX_FLIP };
+//3D drawing still uses these but I changed the names
+//apparently they can't have numbers in em though. so it says D instead of 3D
+//I've had a stressful day
+enum DrawFXFlags { D_SCALE, D_ROTATE, D_ROTOZOOM, D_INK, D_TINT, D_FLIP };
 
 struct DrawListEntry {
     int entityRefs[ENTITY_COUNT];
