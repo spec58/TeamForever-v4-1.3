@@ -647,17 +647,17 @@ AliasInfo publicAliases[ALIAS_COUNT] = {
     AliasInfo("TILELAYER_3DFLOOR", "3"),
     AliasInfo("TILELAYER_3DSKY", "4"),
     AliasInfo("GROUP_ALL", "0"),
-	// These are for Engine.PlatformID
-	AliasInfo("RETRO_WIN", "0"),
-	AliasInfo("RETRO_OSX", "1"),
-	AliasInfo("RETRO_XBOX_360", "2"),
-	AliasInfo("RETRO_PS3", "3"),
-	AliasInfo("RETRO_iOS", "4"),
-	AliasInfo("RETRO_ANDROID", "5"),
-	AliasInfo("RETRO_WP7", "6"),
-	AliasInfo("RETRO_UWP", "7"),
-	AliasInfo("RETRO_LINUX", "8"),
-	AliasInfo("RETRO_SWITCH", "9")
+    // These are for Engine.PlatformID
+    AliasInfo("RETRO_WIN", "0"),
+    AliasInfo("RETRO_OSX", "1"),
+    AliasInfo("RETRO_XBOX_360", "2"),
+    AliasInfo("RETRO_PS3", "3"),
+    AliasInfo("RETRO_iOS", "4"),
+    AliasInfo("RETRO_ANDROID", "5"),
+    AliasInfo("RETRO_WP7", "6"),
+    AliasInfo("RETRO_UWP", "7"),
+    AliasInfo("RETRO_LINUX", "8"),
+    AliasInfo("RETRO_SWITCH", "9")
 };
 AliasInfo privateAliases[ALIAS_COUNT_TRIM];
 int publicAliasCount  = 0;
@@ -1112,291 +1112,291 @@ void CheckAliasText(char *text)
 {
     sizeof(publicTables);
     if (FindStringToken(text, "publicalias", 1) == 0) {
-		
-		if (publicAliasCount >= ALIAS_COUNT) {
-			SetupTextMenu(&gameMenu[0], 0);
+        
+        if (publicAliasCount >= ALIAS_COUNT) {
+            SetupTextMenu(&gameMenu[0], 0);
             AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
             AddTextMenuEntry(&gameMenu[0], " ");
             AddTextMenuEntry(&gameMenu[0], "TOO MANY PUBLIC ALIASES");
             Engine.gameMode = ENGINE_SCRIPTERROR;									// public alias & we reached the cap
             return;
-		}
+        }
 
-		AliasInfo *a = &publicAliases[publicAliasCount];
-		int *cnt     = &publicAliasCount;
-		bool priv    = false;
-		MEM_ZEROP(a);
-		int textPos     = 11;
-		int aliasStrPos = 0;
-		int aliasMatch  = 0;
+        AliasInfo *a = &publicAliases[publicAliasCount];
+        int *cnt     = &publicAliasCount;
+        bool priv    = false;
+        MEM_ZEROP(a);
+        int textPos     = 11;
+        int aliasStrPos = 0;
+        int aliasMatch  = 0;
 
-		
-		while (aliasMatch < 2) {
-			if (aliasMatch) {
-				if (aliasMatch == 1) {
-					a->name[aliasStrPos] = text[textPos];
-					if (text[textPos]) {
-						aliasStrPos++;
-					}
-					else {
-						aliasStrPos = 0;
-						++aliasMatch;
-					}
-				}
-			}
-			else if (text[textPos] == ':') {
-				a->value[aliasStrPos] = 0;
-				aliasStrPos           = 0;
-				aliasMatch            = 1;
-			}
-			else {
-				a->value[aliasStrPos++] = text[textPos];
-			}
-			++textPos;
-		}
+        
+        while (aliasMatch < 2) {
+            if (aliasMatch) {
+                if (aliasMatch == 1) {
+                    a->name[aliasStrPos] = text[textPos];
+                    if (text[textPos]) {
+                        aliasStrPos++;
+                    }
+                    else {
+                        aliasStrPos = 0;
+                        ++aliasMatch;
+                    }
+                }
+            }
+            else if (text[textPos] == ':') {
+                a->value[aliasStrPos] = 0;
+                aliasStrPos           = 0;
+                aliasMatch            = 1;
+            }
+            else {
+                a->value[aliasStrPos++] = text[textPos];
+            }
+            ++textPos;
+        }
 
-		for (int v = 0; v < *cnt; ++v) {
-			if (StrComp(publicAliases[v].name, a->name)) {
-				char buf[0x40];
-				sprintf(buf, "Warning: Public Alias %s has already been used!", a->name);
-				PrintLog(buf);
-			}
-		}
+        for (int v = 0; v < *cnt; ++v) {
+            if (StrComp(publicAliases[v].name, a->name)) {
+                char buf[0x40];
+                sprintf(buf, "Warning: Public Alias %s has already been used!", a->name);
+                PrintLog(buf);
+            }
+        }
 
-		++*cnt;
-	}
-	else if (FindStringToken(text, "privatealias", 1) == 0) {
-		
-		if (privateAliasCount >= ALIAS_COUNT) {
-			SetupTextMenu(&gameMenu[0], 0);
+        ++*cnt;
+    }
+    else if (FindStringToken(text, "privatealias", 1) == 0) {
+        
+        if (privateAliasCount >= ALIAS_COUNT) {
+            SetupTextMenu(&gameMenu[0], 0);
             AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
             AddTextMenuEntry(&gameMenu[0], " ");
             AddTextMenuEntry(&gameMenu[0], "TOO MANY PRIVATE ALIASES");
             Engine.gameMode = ENGINE_SCRIPTERROR;									// public alias & we reached the cap
             return;
-		}
-		
-		AliasInfo *a = &privateAliases[privateAliasCount];
-		int *cnt     = &privateAliasCount;
-		bool priv    = false;
-		MEM_ZEROP(a);
-		int textPos     = 12;
-		int aliasStrPos = 0;
-		int aliasMatch  = 0;
-		
+        }
+        
+        AliasInfo *a = &privateAliases[privateAliasCount];
+        int *cnt     = &privateAliasCount;
+        bool priv    = false;
+        MEM_ZEROP(a);
+        int textPos     = 12;
+        int aliasStrPos = 0;
+        int aliasMatch  = 0;
+        
 
-		while (aliasMatch < 2) {
-			if (aliasMatch) {
-				if (aliasMatch == 1) {
-					a->name[aliasStrPos] = text[textPos];
-					if (text[textPos]) {
-						aliasStrPos++;
-					}
-					else {
-						aliasStrPos = 0;
-						++aliasMatch;
-					}
-				}
-			}
-			else if (text[textPos] == ':') {
-				a->value[aliasStrPos] = 0;
-				aliasStrPos           = 0;
-				aliasMatch            = 1;
-			}
-			else {
-				a->value[aliasStrPos++] = text[textPos];
-			}
-			++textPos;
-		}
+        while (aliasMatch < 2) {
+            if (aliasMatch) {
+                if (aliasMatch == 1) {
+                    a->name[aliasStrPos] = text[textPos];
+                    if (text[textPos]) {
+                        aliasStrPos++;
+                    }
+                    else {
+                        aliasStrPos = 0;
+                        ++aliasMatch;
+                    }
+                }
+            }
+            else if (text[textPos] == ':') {
+                a->value[aliasStrPos] = 0;
+                aliasStrPos           = 0;
+                aliasMatch            = 1;
+            }
+            else {
+                a->value[aliasStrPos++] = text[textPos];
+            }
+            ++textPos;
+        }
 
-		for (int v = 0; v < *cnt; ++v) {
-			if (StrComp(privateAliases[v].name, a->name)) {
-				char buf[0x40];
-				sprintf(buf, "Warning: Private Alias %s has already been used!", a->name);
-				PrintLog(buf);
-			}
-		}
+        for (int v = 0; v < *cnt; ++v) {
+            if (StrComp(privateAliases[v].name, a->name)) {
+                char buf[0x40];
+                sprintf(buf, "Warning: Private Alias %s has already been used!", a->name);
+                PrintLog(buf);
+            }
+        }
 
-		++*cnt;
-	}
+        ++*cnt;
+    }
 }
 void CheckStaticText(char *text)
 {
-	if (FindStringToken(text, "publicvalue", 1) == 0) {
-		 if (publicStaticVarCount >= STATICVAR_COUNT) {
-			SetupTextMenu(&gameMenu[0], 0);
+    if (FindStringToken(text, "publicvalue", 1) == 0) {
+         if (publicStaticVarCount >= STATICVAR_COUNT) {
+            SetupTextMenu(&gameMenu[0], 0);
             AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
             AddTextMenuEntry(&gameMenu[0], " ");
             AddTextMenuEntry(&gameMenu[0], "TOO MANY PUBLIC VALUES");
             Engine.gameMode = ENGINE_SCRIPTERROR;
-			return;
-		 }
-		
-		StaticInfo *var = &publicStaticVariables[publicStaticVarCount];
-		int *cnt        = &publicStaticVarCount;
-		MEM_ZEROP(var);
-		int textPos      = 11;
-		int staticStrPos = 0;
-		int staticMatch  = 0;
-		char strBuffer[0x10];	
-		
-		var->dataPos = -1;
+            return;
+         }
+        
+        StaticInfo *var = &publicStaticVariables[publicStaticVarCount];
+        int *cnt        = &publicStaticVarCount;
+        MEM_ZEROP(var);
+        int textPos      = 11;
+        int staticStrPos = 0;
+        int staticMatch  = 0;
+        char strBuffer[0x10];	
+        
+        var->dataPos = -1;
 
-		while (staticMatch < 2) {
-			if (staticMatch == 1) {
-				if (text[staticStrPos] != ';' && text[textPos]) {
-					strBuffer[staticStrPos++] = text[textPos];
-				}
-				else {
-					strBuffer[staticStrPos] = 0;
+        while (staticMatch < 2) {
+            if (staticMatch == 1) {
+                if (text[staticStrPos] != ';' && text[textPos]) {
+                    strBuffer[staticStrPos++] = text[textPos];
+                }
+                else {
+                    strBuffer[staticStrPos] = 0;
 
-					if (!ConvertStringToInteger(strBuffer, &var->value)) {
-						bool flag = false;
+                    if (!ConvertStringToInteger(strBuffer, &var->value)) {
+                        bool flag = false;
 
-						for (int a = 0; a < publicAliasCount && !flag; ++a) {
-							if (StrComp(publicAliases[a].name, strBuffer)) {
-								StrCopy(strBuffer, publicAliases[a].value);
-								break;
-							}
-						}
+                        for (int a = 0; a < publicAliasCount && !flag; ++a) {
+                            if (StrComp(publicAliases[a].name, strBuffer)) {
+                                StrCopy(strBuffer, publicAliases[a].value);
+                                break;
+                            }
+                        }
 
-						if (!ConvertStringToInteger(strBuffer, &var->value)) {
-							PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
-						}
-					}
+                        if (!ConvertStringToInteger(strBuffer, &var->value)) {
+                            PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
+                        }
+                    }
 
-					var->dataPos                = scriptDataPos;
-					scriptData[scriptDataPos++] = var->value;
-					staticStrPos                = 0;
-					++staticMatch;
-				}
-			}
-			else if (text[textPos] == '=') {
-				var->name[staticStrPos] = 0;
-				staticStrPos            = 0;
-				staticMatch             = 1;
-			}
-			else if (!text[textPos]) {
-				break;
-			}
-			else {
-				var->name[staticStrPos++] = text[textPos];
-			}
-			++textPos;
-		}
+                    var->dataPos                = scriptDataPos;
+                    scriptData[scriptDataPos++] = var->value;
+                    staticStrPos                = 0;
+                    ++staticMatch;
+                }
+            }
+            else if (text[textPos] == '=') {
+                var->name[staticStrPos] = 0;
+                staticStrPos            = 0;
+                staticMatch             = 1;
+            }
+            else if (!text[textPos]) {
+                break;
+            }
+            else {
+                var->name[staticStrPos++] = text[textPos];
+            }
+            ++textPos;
+        }
 
-		// no assigned value, default to 0
-		if (var->dataPos == -1) {
-			var->dataPos                = scriptDataPos;
-			var->value                  = 0;
-			scriptData[scriptDataPos++] = var->value;
-		}
+        // no assigned value, default to 0
+        if (var->dataPos == -1) {
+            var->dataPos                = scriptDataPos;
+            var->value                  = 0;
+            scriptData[scriptDataPos++] = var->value;
+        }
 
-		for (int v = 0; v < *cnt; ++v) {
-			if (StrComp(publicStaticVariables[v].name, var->name)) {
-				char buf[0x40];
-				sprintf(buf, "Warning: Public Variable %s has already been used!", var->name);
-				PrintLog(buf);
-			}
-		}
+        for (int v = 0; v < *cnt; ++v) {
+            if (StrComp(publicStaticVariables[v].name, var->name)) {
+                char buf[0x40];
+                sprintf(buf, "Warning: Public Variable %s has already been used!", var->name);
+                PrintLog(buf);
+            }
+        }
 
-		++*cnt;
-	}
-	else if (FindStringToken(text, "privatevalue", 1) == 0) {
-		if (privateStaticVarCount >= STATICVAR_COUNT) {
-			SetupTextMenu(&gameMenu[0], 0);
+        ++*cnt;
+    }
+    else if (FindStringToken(text, "privatevalue", 1) == 0) {
+        if (privateStaticVarCount >= STATICVAR_COUNT) {
+            SetupTextMenu(&gameMenu[0], 0);
             AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
             AddTextMenuEntry(&gameMenu[0], " ");
             AddTextMenuEntry(&gameMenu[0], "TOO MANY PRIVATE VALUES");
             Engine.gameMode = ENGINE_SCRIPTERROR;
-			return;
-		}
-		
-		StaticInfo *var = &privateStaticVariables[privateStaticVarCount];
-		int *cnt        = &privateStaticVarCount;
-		MEM_ZEROP(var);
-		int textPos      = 12;
-		int staticStrPos = 0;
-		int staticMatch  = 0;
-		char strBuffer[0x10];	
-		
-		var->dataPos = -1;
+            return;
+        }
+        
+        StaticInfo *var = &privateStaticVariables[privateStaticVarCount];
+        int *cnt        = &privateStaticVarCount;
+        MEM_ZEROP(var);
+        int textPos      = 12;
+        int staticStrPos = 0;
+        int staticMatch  = 0;
+        char strBuffer[0x10];	
+        
+        var->dataPos = -1;
 
-		while (staticMatch < 2) {
-			if (staticMatch == 1) {
-				if (text[staticStrPos] != ';' && text[textPos]) {
-					strBuffer[staticStrPos++] = text[textPos];
-				}
-				else {
-					strBuffer[staticStrPos] = 0;
+        while (staticMatch < 2) {
+            if (staticMatch == 1) {
+                if (text[staticStrPos] != ';' && text[textPos]) {
+                    strBuffer[staticStrPos++] = text[textPos];
+                }
+                else {
+                    strBuffer[staticStrPos] = 0;
 
-					if (!ConvertStringToInteger(strBuffer, &var->value)) {
-						bool flag = false;
-						for (int a = 0; a < privateAliasCount; ++a) {
-							if (StrComp(privateAliases[a].name, strBuffer)) {
-								StrCopy(strBuffer, privateAliases[a].value);
-								flag = true;
-								break;
-							}
-						}
+                    if (!ConvertStringToInteger(strBuffer, &var->value)) {
+                        bool flag = false;
+                        for (int a = 0; a < privateAliasCount; ++a) {
+                            if (StrComp(privateAliases[a].name, strBuffer)) {
+                                StrCopy(strBuffer, privateAliases[a].value);
+                                flag = true;
+                                break;
+                            }
+                        }
 
-						if (!ConvertStringToInteger(strBuffer, &var->value)) {
-							PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
-						}
-					}
+                        if (!ConvertStringToInteger(strBuffer, &var->value)) {
+                            PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
+                        }
+                    }
 
-					var->dataPos                = scriptDataPos;
-					scriptData[scriptDataPos++] = var->value;
-					staticStrPos                = 0;
-					++staticMatch;
-				}
-			}
-			else if (text[textPos] == '=') {
-				var->name[staticStrPos] = 0;
-				staticStrPos            = 0;
-				staticMatch             = 1;
-			}
-			else if (!text[textPos]) {
-				break;
-			}
-			else {
-				var->name[staticStrPos++] = text[textPos];
-			}
-			++textPos;
-		}
+                    var->dataPos                = scriptDataPos;
+                    scriptData[scriptDataPos++] = var->value;
+                    staticStrPos                = 0;
+                    ++staticMatch;
+                }
+            }
+            else if (text[textPos] == '=') {
+                var->name[staticStrPos] = 0;
+                staticStrPos            = 0;
+                staticMatch             = 1;
+            }
+            else if (!text[textPos]) {
+                break;
+            }
+            else {
+                var->name[staticStrPos++] = text[textPos];
+            }
+            ++textPos;
+        }
 
-		// no assigned value, default to 0
-		if (var->dataPos == -1) {
-			var->dataPos                = scriptDataPos;
-			var->value                  = 0;
-			scriptData[scriptDataPos++] = var->value;
-		}
+        // no assigned value, default to 0
+        if (var->dataPos == -1) {
+            var->dataPos                = scriptDataPos;
+            var->value                  = 0;
+            scriptData[scriptDataPos++] = var->value;
+        }
 
-		for (int v = 0; v < *cnt; ++v) {
-			if (StrComp(privateStaticVariables[v].name, var->name)) {
-				char buf[0x40];
-				sprintf(buf, "Warning: Private Variable %s has already been used!", var->name);
-				PrintLog(buf);
-			}
-		}
+        for (int v = 0; v < *cnt; ++v) {
+            if (StrComp(privateStaticVariables[v].name, var->name)) {
+                char buf[0x40];
+                sprintf(buf, "Warning: Private Variable %s has already been used!", var->name);
+                PrintLog(buf);
+            }
+        }
 
-		++*cnt;
-	}
+        ++*cnt;
+    }
 }
 TableInfo *CheckTableText(char *text)
 {
     if (FindStringToken(text, "publictable", 1) && FindStringToken(text, "privatetable", 1))
         return NULL;
-	
-	if (FindStringToken(text, "publictable", 1) == 0) { // public table & we reached the cap
-		if (publicTableCount >= TABLE_COUNT) {
-			SetupTextMenu(&gameMenu[0], 0);
+    
+    if (FindStringToken(text, "publictable", 1) == 0) { // public table & we reached the cap
+        if (publicTableCount >= TABLE_COUNT) {
+            SetupTextMenu(&gameMenu[0], 0);
             AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
             AddTextMenuEntry(&gameMenu[0], " ");
             AddTextMenuEntry(&gameMenu[0], "TOO MANY PUBLIC TABLES");
             Engine.gameMode = ENGINE_SCRIPTERROR;
             return NULL;
-		}
+        }
     }
 
     TableInfo *table = &publicTables[publicTableCount];
@@ -1404,13 +1404,13 @@ TableInfo *CheckTableText(char *text)
     curTablePublic   = true;
     if (FindStringToken(text, "privatetable", 1) == 0) {
         if (privateTableCount >= TABLE_COUNT) { // private table and we reached the cap
-			SetupTextMenu(&gameMenu[0], 0);
+            SetupTextMenu(&gameMenu[0], 0);
             AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
             AddTextMenuEntry(&gameMenu[0], " ");
             AddTextMenuEntry(&gameMenu[0], "TOO MANY PRIVATE TABLES");
             Engine.gameMode = ENGINE_SCRIPTERROR;
             return NULL;
-		}	
+        }	
         table          = &privateTables[privateTableCount];
         strPos         = 12;
         curTablePublic = false;
@@ -4660,12 +4660,12 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
             case FUNC_DRAWSPRITEFX:
                 opcodeSize  = 0;
                 spriteFrame = &scriptFrames[scriptInfo->frameListOffset + scriptEng.operands[0]];
-				DrawSpriteAllEffect(entity->direction, (scriptEng.operands[2] >> 16) - xScrollOffset,
+                DrawSpriteAllEffect(entity->direction, (scriptEng.operands[2] >> 16) - xScrollOffset,
                                            (scriptEng.operands[3] >> 16) - yScrollOffset, -spriteFrame->pivotX, -spriteFrame->pivotY,
                                            spriteFrame->sprX, spriteFrame->sprY, spriteFrame->width, spriteFrame->height, entity->rotation,
                                            entity->scale, scriptInfo->spriteSheetID, entity->alpha, entity->inkEffect, scriptEng.operands[1]);
-				break;
-				/*
+                break;
+                /*
                 switch (scriptEng.operands[1]) {
                     default: break;
                     case FX_SCALE:
@@ -4761,15 +4761,15 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                         break;
                 }
                 break;
-				*/
+                */
             case FUNC_DRAWSPRITESCREENFX:
                 opcodeSize  = 0;
                 spriteFrame = &scriptFrames[scriptInfo->frameListOffset + scriptEng.operands[0]];
-				DrawSpriteAllEffect(entity->direction, scriptEng.operands[2], scriptEng.operands[3], -spriteFrame->pivotX,
+                DrawSpriteAllEffect(entity->direction, scriptEng.operands[2], scriptEng.operands[3], -spriteFrame->pivotX,
                                            -spriteFrame->pivotY, spriteFrame->sprX, spriteFrame->sprY, spriteFrame->width, spriteFrame->height,
                                            entity->rotation, entity->scale, scriptInfo->spriteSheetID, entity->alpha, entity->inkEffect, scriptEng.operands[1]);
-				break;
-				/*
+                break;
+                /*
                 switch (scriptEng.operands[1]) {
                     default: break;
                     case FX_SCALE:
@@ -4854,7 +4854,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptEvent)
                         break;
                 }
                 break;
-				*/
+                */
             case FUNC_LOADANIMATION:
                 opcodeSize           = 0;
                 scriptInfo->animFile = AddAnimationFile(scriptText);
