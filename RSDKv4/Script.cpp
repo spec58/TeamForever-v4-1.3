@@ -1111,176 +1111,306 @@ enum ScrFunc {
 void CheckAliasText(char *text)
 {
     sizeof(publicTables);
-    if (FindStringToken(text, "publicalias", 1) && FindStringToken(text, "privatealias", 1))
-        return;
-    int textPos     = 11;
-    int aliasStrPos = 0;
-    int aliasMatch  = 0;
-
-    if (publicAliasCount >= ALIAS_COUNT) {
-        if (FindStringToken(text, "privatealias", 1)) // public alias & we reached the cap
+    if (FindStringToken(text, "publicalias", 1) == 0) {
+		
+		if (publicAliasCount >= ALIAS_COUNT) {
+			SetupTextMenu(&gameMenu[0], 0);
+            AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
+            AddTextMenuEntry(&gameMenu[0], " ");
+            AddTextMenuEntry(&gameMenu[0], "TOO MANY PUBLIC ALIASES");
+            Engine.gameMode = ENGINE_SCRIPTERROR;									// public alias & we reached the cap
             return;
-    }
+		}
 
-    AliasInfo *a = &publicAliases[publicAliasCount];
-    int *cnt     = &publicAliasCount;
-    bool priv    = false;
-    if (FindStringToken(text, "privatealias", 1) == 0) {
-        a       = &privateAliases[privateAliasCount];
-        cnt     = &privateAliasCount;
-        textPos = 12;
-        if (privateAliasCount >= ALIAS_COUNT) // private alias & we reached the cap
+		AliasInfo *a = &publicAliases[publicAliasCount];
+		int *cnt     = &publicAliasCount;
+		bool priv    = false;
+		MEM_ZEROP(a);
+		int textPos     = 11;
+		int aliasStrPos = 0;
+		int aliasMatch  = 0;
+
+		
+		while (aliasMatch < 2) {
+			if (aliasMatch) {
+				if (aliasMatch == 1) {
+					a->name[aliasStrPos] = text[textPos];
+					if (text[textPos]) {
+						aliasStrPos++;
+					}
+					else {
+						aliasStrPos = 0;
+						++aliasMatch;
+					}
+				}
+			}
+			else if (text[textPos] == ':') {
+				a->value[aliasStrPos] = 0;
+				aliasStrPos           = 0;
+				aliasMatch            = 1;
+			}
+			else {
+				a->value[aliasStrPos++] = text[textPos];
+			}
+			++textPos;
+		}
+
+		for (int v = 0; v < *cnt; ++v) {
+			if (StrComp(publicAliases[v].name, a->name)) {
+				char buf[0x40];
+				sprintf(buf, "Warning: Public Alias %s has already been used!", a->name);
+				PrintLog(buf);
+			}
+		}
+
+		++*cnt;
+	}
+	else if (FindStringToken(text, "privatealias", 1) == 0) {
+		
+		if (privateAliasCount >= ALIAS_COUNT) {
+			SetupTextMenu(&gameMenu[0], 0);
+            AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
+            AddTextMenuEntry(&gameMenu[0], " ");
+            AddTextMenuEntry(&gameMenu[0], "TOO MANY PRIVATE ALIASES");
+            Engine.gameMode = ENGINE_SCRIPTERROR;									// public alias & we reached the cap
             return;
-        priv = true;
-    }
-    MEM_ZEROP(a);
+		}
+		
+		AliasInfo *a = &privateAliases[privateAliasCount];
+		int *cnt     = &privateAliasCount;
+		bool priv    = false;
+		MEM_ZEROP(a);
+		int textPos     = 12;
+		int aliasStrPos = 0;
+		int aliasMatch  = 0;
+		
 
-    while (aliasMatch < 2) {
-        if (aliasMatch) {
-            if (aliasMatch == 1) {
-                a->name[aliasStrPos] = text[textPos];
-                if (text[textPos]) {
-                    aliasStrPos++;
-                }
-                else {
-                    aliasStrPos = 0;
-                    ++aliasMatch;
-                }
-            }
-        }
-        else if (text[textPos] == ':') {
-            a->value[aliasStrPos] = 0;
-            aliasStrPos           = 0;
-            aliasMatch            = 1;
-        }
-        else {
-            a->value[aliasStrPos++] = text[textPos];
-        }
-        ++textPos;
-    }
+		while (aliasMatch < 2) {
+			if (aliasMatch) {
+				if (aliasMatch == 1) {
+					a->name[aliasStrPos] = text[textPos];
+					if (text[textPos]) {
+						aliasStrPos++;
+					}
+					else {
+						aliasStrPos = 0;
+						++aliasMatch;
+					}
+				}
+			}
+			else if (text[textPos] == ':') {
+				a->value[aliasStrPos] = 0;
+				aliasStrPos           = 0;
+				aliasMatch            = 1;
+			}
+			else {
+				a->value[aliasStrPos++] = text[textPos];
+			}
+			++textPos;
+		}
 
-    for (int v = 0; v < *cnt; ++v) {
-        if (StrComp(priv ? privateAliases[v].name : publicAliases[v].name, a->name)) {
-            char buf[0x40];
-            sprintf(buf, "Warning: Alias %s has already been used!", a->name);
-            PrintLog(buf);
-        }
-    }
+		for (int v = 0; v < *cnt; ++v) {
+			if (StrComp(privateAliases[v].name, a->name)) {
+				char buf[0x40];
+				sprintf(buf, "Warning: Private Alias %s has already been used!", a->name);
+				PrintLog(buf);
+			}
+		}
 
-    ++*cnt;
+		++*cnt;
+	}
 }
 void CheckStaticText(char *text)
 {
-    if (FindStringToken(text, "publicvalue", 1) && FindStringToken(text, "privatevalue", 1))
-        return;
-    int textPos      = 11;
-    int staticStrPos = 0;
-    int staticMatch  = 0;
-    char strBuffer[0x10];
+	if (FindStringToken(text, "publicvalue", 1) == 0) {
+		 if (publicStaticVarCount >= STATICVAR_COUNT) {
+			SetupTextMenu(&gameMenu[0], 0);
+            AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
+            AddTextMenuEntry(&gameMenu[0], " ");
+            AddTextMenuEntry(&gameMenu[0], "TOO MANY PUBLIC VALUES");
+            Engine.gameMode = ENGINE_SCRIPTERROR;
+			return;
+		 }
+		
+		StaticInfo *var = &publicStaticVariables[publicStaticVarCount];
+		int *cnt        = &publicStaticVarCount;
+		MEM_ZEROP(var);
+		int textPos      = 11;
+		int staticStrPos = 0;
+		int staticMatch  = 0;
+		char strBuffer[0x10];	
+		
+		var->dataPos = -1;
 
-    if (publicStaticVarCount >= STATICVAR_COUNT) {
-        if (FindStringToken(text, "privatevalue", 1)) // public value & we reached the cap
-            return;
-    }
+		while (staticMatch < 2) {
+			if (staticMatch == 1) {
+				if (text[staticStrPos] != ';' && text[textPos]) {
+					strBuffer[staticStrPos++] = text[textPos];
+				}
+				else {
+					strBuffer[staticStrPos] = 0;
 
-    StaticInfo *var = &publicStaticVariables[publicStaticVarCount];
-    int *cnt        = &publicStaticVarCount;
-    bool priv       = false;
-    if (FindStringToken(text, "privatevalue", 1) == 0) {
-        if (privateStaticVarCount >= STATICVAR_COUNT) // private value and we reached the cap
-            return;
-        var     = &privateStaticVariables[privateStaticVarCount];
-        cnt     = &privateStaticVarCount;
-        textPos = 12;
-        priv    = true;
-    }
-    MEM_ZEROP(var);
+					if (!ConvertStringToInteger(strBuffer, &var->value)) {
+						bool flag = false;
 
-    var->dataPos = -1;
+						for (int a = 0; a < publicAliasCount && !flag; ++a) {
+							if (StrComp(publicAliases[a].name, strBuffer)) {
+								StrCopy(strBuffer, publicAliases[a].value);
+								break;
+							}
+						}
 
-    while (staticMatch < 2) {
-        if (staticMatch == 1) {
-            if (text[staticStrPos] != ';' && text[textPos]) {
-                strBuffer[staticStrPos++] = text[textPos];
-            }
-            else {
-                strBuffer[staticStrPos] = 0;
+						if (!ConvertStringToInteger(strBuffer, &var->value)) {
+							PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
+						}
+					}
 
-                if (!ConvertStringToInteger(strBuffer, &var->value)) {
-                    bool flag = false;
-                    for (int a = 0; a < privateAliasCount; ++a) {
-                        if (StrComp(privateAliases[a].name, strBuffer)) {
-                            StrCopy(strBuffer, privateAliases[a].value);
-                            flag = true;
-                            break;
-                        }
-                    }
+					var->dataPos                = scriptDataPos;
+					scriptData[scriptDataPos++] = var->value;
+					staticStrPos                = 0;
+					++staticMatch;
+				}
+			}
+			else if (text[textPos] == '=') {
+				var->name[staticStrPos] = 0;
+				staticStrPos            = 0;
+				staticMatch             = 1;
+			}
+			else if (!text[textPos]) {
+				break;
+			}
+			else {
+				var->name[staticStrPos++] = text[textPos];
+			}
+			++textPos;
+		}
 
-                    for (int a = 0; a < publicAliasCount && !flag; ++a) {
-                        if (StrComp(publicAliases[a].name, strBuffer)) {
-                            StrCopy(strBuffer, publicAliases[a].value);
-                            break;
-                        }
-                    }
+		// no assigned value, default to 0
+		if (var->dataPos == -1) {
+			var->dataPos                = scriptDataPos;
+			var->value                  = 0;
+			scriptData[scriptDataPos++] = var->value;
+		}
 
-                    if (!ConvertStringToInteger(strBuffer, &var->value)) {
-                        PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
-                    }
-                }
+		for (int v = 0; v < *cnt; ++v) {
+			if (StrComp(publicStaticVariables[v].name, var->name)) {
+				char buf[0x40];
+				sprintf(buf, "Warning: Public Variable %s has already been used!", var->name);
+				PrintLog(buf);
+			}
+		}
 
-                var->dataPos                = scriptDataPos;
-                scriptData[scriptDataPos++] = var->value;
-                staticStrPos                = 0;
-                ++staticMatch;
-            }
-        }
-        else if (text[textPos] == '=') {
-            var->name[staticStrPos] = 0;
-            staticStrPos            = 0;
-            staticMatch             = 1;
-        }
-        else if (!text[textPos]) {
-            break;
-        }
-        else {
-            var->name[staticStrPos++] = text[textPos];
-        }
-        ++textPos;
-    }
+		++*cnt;
+	}
+	else if (FindStringToken(text, "privatevalue", 1) == 0) {
+		if (privateStaticVarCount >= STATICVAR_COUNT) {
+			SetupTextMenu(&gameMenu[0], 0);
+            AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
+            AddTextMenuEntry(&gameMenu[0], " ");
+            AddTextMenuEntry(&gameMenu[0], "TOO MANY PRIVATE VALUES");
+            Engine.gameMode = ENGINE_SCRIPTERROR;
+			return;
+		}
+		
+		StaticInfo *var = &privateStaticVariables[privateStaticVarCount];
+		int *cnt        = &privateStaticVarCount;
+		MEM_ZEROP(var);
+		int textPos      = 12;
+		int staticStrPos = 0;
+		int staticMatch  = 0;
+		char strBuffer[0x10];	
+		
+		var->dataPos = -1;
 
-    // no assigned value, default to 0
-    if (var->dataPos == -1) {
-        var->dataPos                = scriptDataPos;
-        var->value                  = 0;
-        scriptData[scriptDataPos++] = var->value;
-    }
+		while (staticMatch < 2) {
+			if (staticMatch == 1) {
+				if (text[staticStrPos] != ';' && text[textPos]) {
+					strBuffer[staticStrPos++] = text[textPos];
+				}
+				else {
+					strBuffer[staticStrPos] = 0;
 
-    for (int v = 0; v < *cnt; ++v) {
-        if (StrComp(priv ? privateStaticVariables[v].name : publicStaticVariables[v].name, var->name)) {
-            char buf[0x40];
-            sprintf(buf, "Warning: Variable %s has already been used!", var->name);
-            PrintLog(buf);
-        }
-    }
+					if (!ConvertStringToInteger(strBuffer, &var->value)) {
+						bool flag = false;
+						for (int a = 0; a < privateAliasCount; ++a) {
+							if (StrComp(privateAliases[a].name, strBuffer)) {
+								StrCopy(strBuffer, privateAliases[a].value);
+								flag = true;
+								break;
+							}
+						}
 
-    ++*cnt;
+						if (!ConvertStringToInteger(strBuffer, &var->value)) {
+							PrintLog("WARNING: unable to convert static var value \"%s\" to int, on line %d", strBuffer, lineID);
+						}
+					}
+
+					var->dataPos                = scriptDataPos;
+					scriptData[scriptDataPos++] = var->value;
+					staticStrPos                = 0;
+					++staticMatch;
+				}
+			}
+			else if (text[textPos] == '=') {
+				var->name[staticStrPos] = 0;
+				staticStrPos            = 0;
+				staticMatch             = 1;
+			}
+			else if (!text[textPos]) {
+				break;
+			}
+			else {
+				var->name[staticStrPos++] = text[textPos];
+			}
+			++textPos;
+		}
+
+		// no assigned value, default to 0
+		if (var->dataPos == -1) {
+			var->dataPos                = scriptDataPos;
+			var->value                  = 0;
+			scriptData[scriptDataPos++] = var->value;
+		}
+
+		for (int v = 0; v < *cnt; ++v) {
+			if (StrComp(privateStaticVariables[v].name, var->name)) {
+				char buf[0x40];
+				sprintf(buf, "Warning: Private Variable %s has already been used!", var->name);
+				PrintLog(buf);
+			}
+		}
+
+		++*cnt;
+	}
 }
 TableInfo *CheckTableText(char *text)
 {
     if (FindStringToken(text, "publictable", 1) && FindStringToken(text, "privatetable", 1))
         return NULL;
-
-    if (publicTableCount >= TABLE_COUNT) {
-        if (FindStringToken(text, "privatetable", 1)) // public table & we reached the cap
+	
+	if (FindStringToken(text, "publictable", 1) == 0) { // public table & we reached the cap
+		if (publicTableCount >= TABLE_COUNT) {
+			SetupTextMenu(&gameMenu[0], 0);
+            AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
+            AddTextMenuEntry(&gameMenu[0], " ");
+            AddTextMenuEntry(&gameMenu[0], "TOO MANY PUBLIC TABLES");
+            Engine.gameMode = ENGINE_SCRIPTERROR;
             return NULL;
+		}
     }
 
     TableInfo *table = &publicTables[publicTableCount];
     int strPos       = 11;
     curTablePublic   = true;
     if (FindStringToken(text, "privatetable", 1) == 0) {
-        if (privateTableCount >= TABLE_COUNT) // private table and we reached the cap
+        if (privateTableCount >= TABLE_COUNT) { // private table and we reached the cap
+			SetupTextMenu(&gameMenu[0], 0);
+            AddTextMenuEntry(&gameMenu[0], "SCRIPT PARSING FAILED");
+            AddTextMenuEntry(&gameMenu[0], " ");
+            AddTextMenuEntry(&gameMenu[0], "TOO MANY PRIVATE TABLES");
+            Engine.gameMode = ENGINE_SCRIPTERROR;
             return NULL;
+		}	
         table          = &privateTables[privateTableCount];
         strPos         = 12;
         curTablePublic = false;
