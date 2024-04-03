@@ -103,7 +103,7 @@ int InitRenderDevice()
     SCREEN_CENTERX = SCREEN_XSIZE / 2;
     Engine.window  = SDL_CreateWindow(gameTitle, SDL_WINDOWPOS_CENTERED_DISPLAY(CURRENT_DISP_SCREEN), SDL_WINDOWPOS_CENTERED_DISPLAY(CURRENT_DISP_SCREEN), SCREEN_XSIZE * Engine.windowScale,
                                      SCREEN_YSIZE * Engine.windowScale, SDL_WINDOW_ALLOW_HIGHDPI | flags);
-									 
+
     if (!Engine.window) {
         PrintLog("ERROR: failed to create window!");
         return 0;
@@ -3860,7 +3860,7 @@ void DrawSpriteAllEffect(int direction, int XPos, int YPos, int pivotX, int pivo
 	if ((flags & 3) == 0)
 		direction = FLIP_NONE;
 	
-	if ((ink > INK_NONE) && (alpha == 0))
+	if ((ink > INK_NONE) && (alpha <= 0))
 		return;
 	
 	if (alpha > 0xFF)
