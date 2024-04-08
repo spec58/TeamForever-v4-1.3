@@ -1157,9 +1157,7 @@ void CheckAliasText(char *text)
 
         for (int v = 0; v < *cnt; ++v) {
             if (StrComp(publicAliases[v].name, a->name)) {
-                char buf[0x40];
-                sprintf(buf, "Warning: Public Alias %s has already been used!", a->name);
-                PrintLog(buf);
+                PrintLog("Warning: Public Alias %s has already been used!", a->name);
             }
         }
 
@@ -1211,9 +1209,7 @@ void CheckAliasText(char *text)
 
         for (int v = 0; v < *cnt; ++v) {
             if (StrComp(privateAliases[v].name, a->name)) {
-                char buf[0x40];
-                sprintf(buf, "Warning: Private Alias %s has already been used!", a->name);
-                PrintLog(buf);
+                PrintLog("Warning: Private Alias %s has already been used!", a->name);
             }
         }
 
@@ -1294,9 +1290,7 @@ void CheckStaticText(char *text)
 
         for (int v = 0; v < *cnt; ++v) {
             if (StrComp(publicStaticVariables[v].name, var->name)) {
-                char buf[0x40];
-                sprintf(buf, "Warning: Public Variable %s has already been used!", var->name);
-                PrintLog(buf);
+                PrintLog("Warning: Public Variable %s has already been used!", var->name);
             }
         }
 
@@ -1374,9 +1368,7 @@ void CheckStaticText(char *text)
 
         for (int v = 0; v < *cnt; ++v) {
             if (StrComp(privateStaticVariables[v].name, var->name)) {
-                char buf[0x40];
-                sprintf(buf, "Warning: Private Variable %s has already been used!", var->name);
-                PrintLog(buf);
+                PrintLog("Warning: Private Variable %s has already been used!", var->name);
             }
         }
 
@@ -1836,9 +1828,7 @@ void ConvertFunctionText(char *text)
                 }
 
                 if (o == OBJECT_COUNT) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -1856,9 +1846,7 @@ void ConvertFunctionText(char *text)
                 }
 
                 if (s == SFX_COUNT) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -1876,9 +1864,7 @@ void ConvertFunctionText(char *text)
                 }
 
                 if (v == globalVariablesCount) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -1908,9 +1894,7 @@ void ConvertFunctionText(char *text)
                 }
 
                 if (a == achievementCount) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -1939,9 +1923,7 @@ void ConvertFunctionText(char *text)
                 }
 
                 if (p == PLAYER_COUNT) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -1961,9 +1943,7 @@ void ConvertFunctionText(char *text)
                 }
 
                 if (s == -1) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
                     s = 0;
                 }
                 funcName[0] = 0;
@@ -2142,9 +2122,7 @@ void CheckCaseNumber(char *text)
             }
 
             if (o == OBJECT_COUNT) {
-                char buf[0x40];
-                sprintf(buf, "WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
-                PrintLog(buf);
+                PrintLog("WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
             }
         }
 
@@ -2162,9 +2140,7 @@ void CheckCaseNumber(char *text)
             }
 
             if (s == SFX_COUNT) {
-                char buf[0x40];
-                sprintf(buf, "WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
-                PrintLog(buf);
+                PrintLog("WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
             }
         }
 
@@ -2182,9 +2158,7 @@ void CheckCaseNumber(char *text)
             }
 
             if (v == globalVariablesCount) {
-                char buf[0x40];
-                sprintf(buf, "WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
-                PrintLog(buf);
+                PrintLog("WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
             }
         }
 
@@ -2214,9 +2188,7 @@ void CheckCaseNumber(char *text)
             }
 
             if (a == achievementCount) {
-                char buf[0x40];
-                sprintf(buf, "WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
-                PrintLog(buf);
+                PrintLog("WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
             }
         }
 
@@ -2245,9 +2217,7 @@ void CheckCaseNumber(char *text)
             }
 
             if (p == PLAYER_COUNT) {
-                char buf[0x40];
-                sprintf(buf, "WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
-                PrintLog(buf);
+                PrintLog("WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
             }
         }
 
@@ -2267,9 +2237,7 @@ void CheckCaseNumber(char *text)
             }
 
             if (s == -1) {
-                char buf[0x40];
-                sprintf(buf, "WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
-                PrintLog(buf);
+                PrintLog("WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
                 s = 0;
             }
             caseValue[0] = 0;
@@ -2380,9 +2348,7 @@ bool ReadSwitchCase(char *text)
                 }
 
                 if (o == OBJECT_COUNT) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown typename \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -2400,9 +2366,7 @@ bool ReadSwitchCase(char *text)
                 }
 
                 if (s == SFX_COUNT) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown sfxName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -2420,9 +2384,7 @@ bool ReadSwitchCase(char *text)
                 }
 
                 if (v == globalVariablesCount) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown varName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -2452,9 +2414,7 @@ bool ReadSwitchCase(char *text)
                 }
 
                 if (a == achievementCount) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown AchievementName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -2483,9 +2443,7 @@ bool ReadSwitchCase(char *text)
                 }
 
                 if (p == PLAYER_COUNT) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown PlayerName \"%s\", on line %d", arrayStr, lineID);
                 }
             }
 
@@ -2505,9 +2463,7 @@ bool ReadSwitchCase(char *text)
                 }
 
                 if (s == -1) {
-                    char buf[0x40];
-                    sprintf(buf, "WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
-                    PrintLog(buf);
+                    PrintLog("WARNING: Unknown StageName \"%s\", on line %d", arrayStr, lineID);
                     s = 0;
                 }
                 caseValue[0] = 0;
@@ -2920,9 +2876,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                             StrCopy(scriptFunctionNames[scriptFunctionCount++], funcName);
                         }
                         else {
-                            char buf[0x40];
-                            sprintf(buf, "Warning: Function %s has already been reserved!", funcName);
-                            PrintLog(buf);
+                            PrintLog("Warning: Function %s has already been reserved!", funcName);
                         }
                         parseMode = PARSEMODE_SCOPELESS;
                     }
@@ -3052,9 +3006,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                         if (curTablePublic) {
                             for (int t = 0; t < publicTableCount; ++t) {
                                 if (StrComp(publicTables[t].name, currentTable->name)) {
-                                    char buf[0x40];
-                                    sprintf(buf, "Warning: Table %s has already been used!", currentTable->name);
-                                    PrintLog(buf);
+                                    PrintLog("Warning: Table %s has already been used!", currentTable->name);
                                 }
                             }
 
@@ -3064,9 +3016,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                         else {
                             for (int t = 0; t < privateTableCount; ++t) {
                                 if (StrComp(privateTables[t].name, currentTable->name)) {
-                                    char buf[0x40];
-                                    sprintf(buf, "Warning: Table %s has already been used!", currentTable->name);
-                                    PrintLog(buf);
+                                    PrintLog("Warning: Table %s has already been used!", currentTable->name);
                                 }
                             }
 
