@@ -228,6 +228,12 @@
     <ClInclude Include="resource2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Video.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\all\theoraplay\theoraplay.h">
+      <Filter>Header Files\dependencies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -421,6 +427,12 @@
     </ClCompile>
     <ClCompile Include="NativeObjects\MultiplayerHandler.cpp">
       <Filter>Source Files\nativeEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="Video.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\all\theoraplay\theoraplay.c">
+      <Filter>Source Files\dependencies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
