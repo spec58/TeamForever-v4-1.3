@@ -40,6 +40,7 @@ bool mixFiltersOnJekyll = false;
 GLint defaultFramebuffer = -1;
 GLuint framebufferHiRes  = -1;
 GLuint renderbufferHiRes = -1;
+GLuint videoBuffer = -1;
 #endif
 
 #if !RETRO_USE_ORIGINAL_CODE
@@ -404,58 +405,66 @@ void FlipScreen()
     SDL_RenderClear(Engine.renderer);
 
     ushort *pixels = NULL;
-    if (!drawStageGFXHQ) {
-        SDL_LockTexture(Engine.screenBuffer, NULL, (void **)&pixels, &pitch);
-        ushort *frameBufferPtr = Engine.frameBuffer;
-        for (int y = 0; y < SCREEN_YSIZE; ++y) {
-            memcpy(pixels, frameBufferPtr, SCREEN_XSIZE * sizeof(ushort));
-            frameBufferPtr += GFX_LINESIZE;
-            pixels += pitch / sizeof(ushort);
+    if (Engine.gameMode != ENGINE_VIDEOWAIT) {
+        if (!drawStageGFXHQ) {
+            SDL_LockTexture(Engine.screenBuffer, NULL, (void **)&pixels, &pitch);
+            ushort *frameBufferPtr = Engine.frameBuffer;
+            for (int y = 0; y < SCREEN_YSIZE; ++y) {
+                memcpy(pixels, frameBufferPtr, SCREEN_XSIZE * sizeof(ushort));
+                frameBufferPtr += GFX_LINESIZE;
+                pixels += pitch / sizeof(ushort);
+            }
+            // memcpy(pixels, Engine.frameBuffer, pitch * SCREEN_YSIZE); //faster but produces issues with odd numbered screen sizes
+            SDL_UnlockTexture(Engine.screenBuffer);
+
+            SDL_RenderCopy(Engine.renderer, Engine.screenBuffer, NULL, NULL);
         }
-        // memcpy(pixels, Engine.frameBuffer, pitch * SCREEN_YSIZE); //faster but produces issues with odd numbered screen sizes
-        SDL_UnlockTexture(Engine.screenBuffer);
+        else {
+            int w = 0, h = 0;
+            SDL_QueryTexture(Engine.screenBuffer2x, NULL, NULL, &w, &h);
+            SDL_LockTexture(Engine.screenBuffer2x, NULL, (void **)&pixels, &pitch);
 
-        SDL_RenderCopy(Engine.renderer, Engine.screenBuffer, NULL, NULL);
-    }
-    else {
-        int w = 0, h = 0;
-        SDL_QueryTexture(Engine.screenBuffer2x, NULL, NULL, &w, &h);
-        SDL_LockTexture(Engine.screenBuffer2x, NULL, (void **)&pixels, &pitch);
+            ushort *framebufferPtr = Engine.frameBuffer;
+            for (int y = 0; y < (SCREEN_YSIZE / 2) + 12; ++y) {
+                for (int x = 0; x < GFX_LINESIZE; ++x) {
+                    *pixels = *framebufferPtr;
+                    pixels++;
+                    *pixels = *framebufferPtr;
+                    pixels++;
+                    framebufferPtr++;
+                }
 
-        ushort *framebufferPtr = Engine.frameBuffer;
-        for (int y = 0; y < (SCREEN_YSIZE / 2) + 12; ++y) {
-            for (int x = 0; x < GFX_LINESIZE; ++x) {
-                *pixels = *framebufferPtr;
-                pixels++;
-                *pixels = *framebufferPtr;
-                pixels++;
-                framebufferPtr++;
+                framebufferPtr -= GFX_LINESIZE;
+                for (int x = 0; x < GFX_LINESIZE; ++x) {
+                    *pixels = *framebufferPtr;
+                    pixels++;
+                    *pixels = *framebufferPtr;
+                    pixels++;
+                    framebufferPtr++;
+                }
             }
 
-            framebufferPtr -= GFX_LINESIZE;
-            for (int x = 0; x < GFX_LINESIZE; ++x) {
-                *pixels = *framebufferPtr;
-                pixels++;
-                *pixels = *framebufferPtr;
-                pixels++;
-                framebufferPtr++;
-            }
-        }
+            framebufferPtr = Engine.frameBuffer2x;
+            for (int y = 0; y < ((SCREEN_YSIZE / 2) - 12) * 2; ++y) {
+                for (int x = 0; x < GFX_LINESIZE; ++x) {
+                    *pixels = *framebufferPtr;
+                    framebufferPtr++;
+                    pixels++;
 
-        framebufferPtr = Engine.frameBuffer2x;
-        for (int y = 0; y < ((SCREEN_YSIZE / 2) - 12) * 2; ++y) {
-            for (int x = 0; x < GFX_LINESIZE; ++x) {
-                *pixels = *framebufferPtr;
-                framebufferPtr++;
-                pixels++;
-
-                *pixels = *framebufferPtr;
-                framebufferPtr++;
-                pixels++;
+                    *pixels = *framebufferPtr;
+                    framebufferPtr++;
+                    pixels++;
+                }
             }
+
+            SDL_UnlockTexture(Engine.screenBuffer2x);
+            SDL_RenderCopy(Engine.renderer, Engine.screenBuffer2x, NULL, NULL);
         }
-        SDL_UnlockTexture(Engine.screenBuffer2x);
-        SDL_RenderCopy(Engine.renderer, Engine.screenBuffer2x, NULL, NULL);
+    } else {
+        SDL_RenderCopy(Engine.renderer, Engine.videoBuffer, NULL, NULL);
+        // this is hacky but whatever, it's the easiest way to handle the fadeout
+        SDL_SetRenderDrawColor(Engine.renderer, 0, 0, 0, fadeMode);
+        SDL_RenderFillRect(Engine.renderer, NULL);
     }
 
     if (Engine.scalingMode != 0 && !disableEnhancedScaling) {
@@ -493,36 +502,40 @@ void FlipScreen()
     int w      = SCREEN_XSIZE * Engine.windowScale;
     int h      = SCREEN_YSIZE * Engine.windowScale;
 
-    if (Engine.windowScale == 1) {
-        ushort *frameBufferPtr = Engine.frameBuffer;
-        for (int y = 0; y < SCREEN_YSIZE; ++y) {
-            for (int x = 0; x < SCREEN_XSIZE; ++x) {
-                pixels[x] = frameBufferPtr[x];
+    if (Engine.gameMode != ENGINE_VIDEOWAIT) {
+        if (Engine.windowScale == 1) {
+            ushort *frameBufferPtr = Engine.frameBuffer;
+            for (int y = 0; y < SCREEN_YSIZE; ++y) {
+                for (int x = 0; x < SCREEN_XSIZE; ++x) {
+                    pixels[x] = frameBufferPtr[x];
+                }
+                frameBufferPtr += GFX_LINESIZE;
+                px += Engine.screenBuffer->pitch / sizeof(ushort);
             }
-            frameBufferPtr += GFX_LINESIZE;
-            px += Engine.screenBuffer->pitch / sizeof(ushort);
+            // memcpy(Engine.screenBuffer->pixels, Engine.frameBuffer, Engine.screenBuffer->pitch * SCREEN_YSIZE);
         }
-        // memcpy(Engine.screenBuffer->pixels, Engine.frameBuffer, Engine.screenBuffer->pitch * SCREEN_YSIZE);
-    }
-    else {
-        // TODO: this better, I really dont know how to use SDL1.2 well lol
-        int dx = 0, dy = 0;
-        do {
+        else {
+            // TODO: this better, I really dont know how to use SDL1.2 well lol
+            int dx = 0, dy = 0;
             do {
-                int x = (int)(dx * (1.0f / Engine.windowScale));
-                int y = (int)(dy * (1.0f / Engine.windowScale));
+                do {
+                    int x = (int)(dx * (1.0f / Engine.windowScale));
+                    int y = (int)(dy * (1.0f / Engine.windowScale));
 
-                px[dx + (dy * w)] = Engine.frameBuffer[x + (y * GFX_LINESIZE)];
+                    px[dx + (dy * w)] = Engine.frameBuffer[x + (y * GFX_LINESIZE)];
 
-                dx++;
-            } while (dx < w);
-            dy++;
-            dx = 0;
-        } while (dy < h);
+                    dx++;
+                } while (dx < w);
+                dy++;
+                dx = 0;
+            } while (dy < h);
+        }
+
+        // Apply image to screen
+        SDL_BlitSurface(Engine.screenBuffer, NULL, Engine.windowSurface, NULL);
+    } else {
+        SDL_BlitSurface(Engine.videoBuffer, NULL, Engine.windowSurface, NULL);
     }
-
-    // Apply image to screen
-    SDL_BlitSurface(Engine.screenBuffer, NULL, Engine.windowSurface, NULL);
 
     // Update Screen
     SDL_Flip(Engine.windowSurface);
