@@ -54,9 +54,9 @@ If you want to transfer your save(s) from the official mobile version(s), the **
 ## Linux
 ### Decompilation
 * To setup your build enviroment and library dependecies, run the following commands:
-  * Ubuntu (Mint, Pop!_OS, etc...): `sudo apt install build-essential git libsdl2-dev libvorbis-dev libogg-dev libglew-dev`
+  * Ubuntu (Mint, Pop!_OS, etc...): `sudo apt install build-essential git libsdl2-dev libvorbis-dev libogg-dev libglew-dev libtheora-dev`
     * If you're using Debian, add `libgbm-dev` and `libdrm-dev`.
-  * Arch Linux: `sudo pacman -S base-devel git sdl2 libvorbis libogg glew`
+  * Arch Linux: `sudo pacman -S base-devel git sdl2 libvorbis libogg glew libtheora`
   * Clone the repo and its other dependencies with the following command: `git clone --recursive https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation.git`
   * Go into the repo you just cloned with `cd Sonic-1-2-2013-Decompilation`.
   * Run `make -j5`.

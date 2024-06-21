@@ -616,6 +616,7 @@ void RetroEngine::Run()
     }
 
     ReleaseAudioDevice();
+    StopVideoPlayback();
     ReleaseRenderDevice();
 #if !RETRO_USE_ORIGINAL_CODE
     ReleaseInputDevices();

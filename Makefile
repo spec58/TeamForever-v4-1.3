@@ -56,8 +56,8 @@ ifeq ($(STATIC),1)
 	CXXFLAGS += -static
 endif
 
-CXXFLAGS_ALL = `$(PKGCONFIG) --cflags --static sdl2 vorbisfile vorbis`
-LIBS_ALL = `$(PKGCONFIG) --libs --static sdl2 vorbisfile vorbis`
+CXXFLAGS_ALL = `$(PKGCONFIG) --cflags --static sdl2 vorbisfile vorbis theoradec`
+LIBS_ALL = `$(PKGCONFIG) --libs --static sdl2 vorbisfile vorbis theoradec`
 
 CXXFLAGS_ALL += $(CXXFLAGS) \
                -DBASE_PATH='"$(BASE_PATH)"' \
@@ -87,8 +87,8 @@ INCLUDES  += \
     -I./RSDKv4/NativeObjects/ \
     -I./dependencies/all/asio/asio/include/ \
     -I./dependencies/all/stb-image/ \
-    -I./dependencies/all/tinyxml2/
-
+    -I./dependencies/all/tinyxml2/ \
+    -I./dependencies/all/theoraplay/
 
 INCLUDES += $(LIBS)
 
@@ -116,8 +116,10 @@ SOURCES = \
     RSDKv4/String       \
     RSDKv4/Text         \
     RSDKv4/Userdata     \
+    RSDKv4/Video        \
     RSDKv4/main         \
     RSDKv4/NativeObjects/All                \
+    dependencies/all/theoraplay/theoraplay  \
     dependencies/all/tinyxml2/tinyxml2
 
 PKGSUFFIX ?= $(SUFFIX)
