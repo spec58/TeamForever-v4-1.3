@@ -3860,7 +3860,7 @@ void DrawSpriteAllEffect(int direction, int XPos, int YPos, int pivotX, int pivo
 	if ((flags & 3) == 0)
 		direction = FLIP_NONE;
 	
-	if ((ink > INK_NONE) && (alpha <= 0))
+	if ((ink > INK_NONE) && (alpha < 0))
 		return;
 	
 	if (alpha > 0xFF)
