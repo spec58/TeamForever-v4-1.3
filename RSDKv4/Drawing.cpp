@@ -303,8 +303,8 @@ int InitRenderDevice()
 void FlipScreen()
 {
 #if !RETRO_USE_ORIGINAL_CODE
-#if RETRO_PLATFORM != RETRO_SWITCH //switch doesn't need this it's builtin
     float dimAmount = 1.0;
+#if RETRO_PLATFORM != RETRO_SWITCH //switch doesn't need this it's builtin
     if ((!Engine.masterPaused || Engine.frameStep) && !drawStageGFXHQ) {
         if (Engine.dimTimer < Engine.dimLimit) {
             if (Engine.dimPercent < 1.0) {

@@ -1,4 +1,5 @@
 #include "RetroEngine.hpp"
+#include <string>
 
 int currentVideoFrame = 0;
 int videoFrameCount = 0;
@@ -6,8 +7,8 @@ int videoWidth = 0;
 int videoHeight = 0;
 float videoAR = 0;
 
-THEORAPLAY_Decoder *videoDecoder = nullptr;
-const THEORAPLAY_VideoFrame *videoVidData = nullptr;
+THEORAPLAY_Decoder *videoDecoder;
+const THEORAPLAY_VideoFrame *videoVidData;
 THEORAPLAY_Io callbacks;
 
 byte videoSurface = 0;
@@ -94,28 +95,26 @@ void PlayVideoFile(char *filePath) {
     if (file) {
         PrintLog("Loaded File '%s'!", filepath);
 
-        callbacks.read = videoRead;
-        callbacks.close = videoClose;
+        callbacks.read     = videoRead;
+        callbacks.close    = videoClose;
         callbacks.userdata = (void *)file;
 
         // TODO
         // perhaps implement multi audio stream support? (e.g. sonic cd cutscenes)
 #if RETRO_USING_SDL2 && !RETRO_USING_OPENGL
-        videoDecoder = THEORAPLAY_startDecode(&callbacks, /*FPS*/ 60, THEORAPLAY_VIDFMT_IYUV);
+        videoDecoder = THEORAPLAY_startDecode(&callbacks, /*FPS*/ 30, THEORAPLAY_VIDFMT_IYUV);
 #endif
 
         // TODO: does SDL1.2 support YUV?
 #if RETRO_USING_SDL1 && !RETRO_USING_OPENGL
         //videoDecoder = THEORAPLAY_startDecode(&callbacks, /*FPS*/ 30, THEORAPLAY_VIDFMT_RGBA, GetGlobalVariableByName("Options.Soundtrack") ? 1 : 0);
-        videoDecoder = THEORAPLAY_startDecodeFile(filepath, 60, THEORAPLAY_VIDFMT_IYUV);
+        videoDecoder = THEORAPLAY_startDecodeFile(filepath, 30, THEORAPLAY_VIDFMT_IYUV);
 #endif
 
 #if RETRO_USING_OPENGL
         //videoDecoder = THEORAPLAY_startDecode(&callbacks, /*FPS*/ 30, THEORAPLAY_VIDFMT_RGBA, GetGlobalVariableByName("Options.Soundtrack") ? 1 : 0);
-        videoDecoder = THEORAPLAY_startDecodeFile(filepath, 60, THEORAPLAY_VIDFMT_RGBA);
+        videoDecoder = THEORAPLAY_startDecodeFile(filepath, 30, THEORAPLAY_VIDFMT_RGBA);
 #endif
-
-        videoVidData = NULL;
 
         if (!videoDecoder) {
             PrintLog("Video Decoder Error!");
@@ -149,7 +148,8 @@ void PlayVideoFile(char *filePath) {
     }
 }
 
-void UpdateVideoFrame() {
+void UpdateVideoFrame()
+{
     if (videoPlaying == 2) {
         if (currentVideoFrame < videoFrameCount) {
             GFXSurface *surface = &gfxSurface[videoSurface];
@@ -202,7 +202,7 @@ void UpdateVideoFrame() {
         }
     }
 }
-int count;
+
 int ProcessVideo() {
     if (videoPlaying == 1) {
         CheckKeyPress(&inputPress);
@@ -258,9 +258,8 @@ int ProcessVideo() {
                             break;
                     }
 
-                    if (!videoVidData) {
+                    if (!videoVidData)
                         videoVidData = last;
-                    }
                 }
 
                 // do nothing; we're far behind and out of options.
@@ -320,8 +319,9 @@ void StopVideoPlayback()
     }
 }
 
-void SetupVideoBuffer(int w, int h) {
-    #if RETRO_USING_OPENGL
+void SetupVideoBuffer(int width, int height)
+{
+#if RETRO_USING_OPENGL
     if (videoBuffer > 0) {
         glDeleteTextures(1, &videoBuffer);
         videoBuffer = 0;
@@ -337,19 +337,24 @@ void SetupVideoBuffer(int w, int h) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glBindTexture(GL_TEXTURE_2D, 0);
+	
+	if (!videoBuffer || !&videoBuffer || !videoVidData)
+        PrintLog("Failed to create video buffer!");
 #elif RETRO_USING_SDL1
     Engine.videoBuffer = SDL_CreateRGBSurface(0, width, height, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
     if (!Engine.videoBuffer)
         PrintLog("Failed to create video buffer!");
 #elif RETRO_USING_SDL2
-    Engine.videoBuffer = SDL_CreateTexture(Engine.renderer, SDL_PIXELFORMAT_YV12, SDL_TEXTUREACCESS_TARGET, w, h);
+    Engine.videoBuffer = SDL_CreateTexture(Engine.renderer, SDL_PIXELFORMAT_YV12, SDL_TEXTUREACCESS_TARGET, width, height);
 
     if (!Engine.videoBuffer)
         PrintLog("Failed to create video buffer!");
 #endif
 }
-void CloseVideoBuffer() {
+
+void CloseVideoBuffer()
+{
     if (videoPlaying == 1) {
 #if RETRO_USING_OPENGL
         if (videoBuffer > 0) {

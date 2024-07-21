@@ -19,13 +19,14 @@ extern int videoFilePos;
 extern int videoPlaying; // 0 = not playing, 1 = playing ogv, 2 = playing rsv
 extern int vidFrameMS;
 extern int vidBaseTicks;
+extern float videoAR;
 
 void PlayVideoFile(char *filePath);
 void UpdateVideoFrame();
 int ProcessVideo();
 void StopVideoPlayback();
 
-void SetupVideoBuffer(int w, int h);
+void SetupVideoBuffer(int width, int height);
 void CloseVideoBuffer();
 
 #endif
