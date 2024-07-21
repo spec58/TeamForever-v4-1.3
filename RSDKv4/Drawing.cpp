@@ -2557,8 +2557,8 @@ void Draw3DFloorLayer(int layerID)
     int layerZPos          = layer->zpos;
     int sinValue           = sinM7LookupTable[layer->angle];
     int cosValue           = cosM7LookupTable[layer->angle];
-    byte *gfxLineBufferPtr = &gfxLineBuffer[((SCREEN_YSIZE / 2) + 12) * GFX_LINESIZE];
-    ushort *frameBufferPtr = &Engine.frameBuffer[132 * GFX_LINESIZE];
+    byte *gfxLineBufferPtr = &gfxLineBuffer[(SCREEN_YSIZE / 2) + 12];
+    ushort *frameBufferPtr = &Engine.frameBuffer[((SCREEN_YSIZE / 2) + 12) * GFX_LINESIZE];
     int layerXPos          = layer->xpos >> 4;
     int ZBuffer            = layerZPos >> 4;
     for (int i = 4; i < 112; ++i) {
@@ -2612,7 +2612,7 @@ void Draw3DSkyLayer(int layerID)
     ushort *frameBufferPtr = &Engine.frameBuffer[((SCREEN_YSIZE / 2) + 12) * GFX_LINESIZE];
     ushort *bufferPtr      = Engine.frameBuffer2x;
     if (!drawStageGFXHQ)
-        bufferPtr = &Engine.frameBuffer[(SCREEN_YSIZE / 2) + 12];
+        bufferPtr = &Engine.frameBuffer[((SCREEN_YSIZE / 2) + 12) * GFX_LINESIZE];
     byte *gfxLineBufferPtr = &gfxLineBuffer[((SCREEN_YSIZE / 2) + 12)];
     int layerXPos          = layer->xpos >> 4;
     int layerZPos          = layer->zpos >> 4;
@@ -2789,12 +2789,13 @@ void DrawTintRectangle(int XPos, int YPos, int width, int height)
         height += YPos;
         YPos = 0;
     }
-    if (width <= 0 || height <= 0)
+	
+    if (width < 0 || height < 0)
         return;
     int yOffset = GFX_LINESIZE - width;
     for (ushort *frameBufferPtr = &Engine.frameBuffer[XPos + GFX_LINESIZE * YPos];; frameBufferPtr += yOffset) {
         height--;
-        if (!height)
+        if (height < 0)
             break;
         int w = width;
         while (w--) {
@@ -2865,7 +2866,7 @@ void DrawScaledTintMask(int direction, int XPos, int YPos, int pivotX, int pivot
             int w         = width;
             while (w--) {
                 if (*gfxDataPtr > 0)
-                    *frameBufferPtr = tintLookupTable[*gfxDataPtr];
+                    *frameBufferPtr = tintLookupTable[*frameBufferPtr];
                 int offsetX = finalscaleX + roundXPos;
                 gfxDataPtr -= offsetX >> 11;
                 gfxPitch += offsetX >> 11;
@@ -2887,7 +2888,7 @@ void DrawScaledTintMask(int direction, int XPos, int YPos, int pivotX, int pivot
             int w         = width;
             while (w--) {
                 if (*gfxData > 0)
-                    *frameBufferPtr = tintLookupTable[*gfxData];
+                    *frameBufferPtr = tintLookupTable[*frameBufferPtr];
                 int offsetX = finalscaleX + roundXPos;
                 gfxData += offsetX >> 11;
                 gfxPitch += offsetX >> 11;
@@ -4950,7 +4951,7 @@ void DrawTexturedFace(void *v, byte sheetID)
             }
             ushort *fbPtr = &frameBufferPtr[startX];
             frameBufferPtr += GFX_LINESIZE;
-            int counter = posDifference + 1;
+            int counter = posDifference;
             while (counter--) {
                 if (UPos < 0)
                     UPos = 0;
@@ -5176,7 +5177,7 @@ void DrawTextMenu(void *menu, int XPos, int YPos)
 
     if (tMenu->selectionCount == 3) {
         tMenu->selection2 = -1;
-        for (int i = 0; i < tMenu->selection1 + 1; ++i) {
+        for (int i = 0; i <= tMenu->selection1; ++i) {
             if (tMenu->entryHighlight[i]) {
                 tMenu->selection2 = i;
             }
