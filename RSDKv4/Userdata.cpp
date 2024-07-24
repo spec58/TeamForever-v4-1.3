@@ -258,13 +258,16 @@ void InitUserdata()
         Engine.startStage_Game = Engine.startStage;
 
         ini.SetBool("Dev", "UseHQModes", Engine.useHQModes = true);
-        //ini.SetString("Dev", "DataFile", (char *)"ForceData.rsdk");
+        ini.SetString("Dev", "DataFile", (char *)"Data.rsdk");
 		
-#if RETRO_PLATFORM == RETRO_ANDROID || RETRO_PLATFORM == RETRO_OSX
-		StrCopy(Engine.dataFile[0], "Data.rsdk");
-#else
-        StrCopy(Engine.dataFile[0], "ForceData.rsdk");
-#endif
+        StrCopy(Engine.dataFile[0], "Data.rsdk");
+
+        //if (!StrComp(Engine.dataFile[1], "")) {
+            ini.SetString("Dev", "DataFile2", (char *)"Data.rsdk.xmf");
+            StrCopy(Engine.dataFile[1], "Data.rsdk.xmf");
+        //}
+		
+		
 		/*
         if (!StrComp(Engine.dataFile[2], "")) {
             ini.SetString("Dev", "DataFile3", (char *)"Data3.rsdk");
@@ -407,18 +410,16 @@ void InitUserdata()
         Engine.startList_Game  = Engine.startList;
         Engine.startStage_Game = Engine.startStage;
 
-        //if (!ini.GetString("Dev", "DataFile", Engine.dataFile[0]))
-#if RETRO_PLATFORM == RETRO_ANDROID || RETRO_PLATFORM == RETRO_OSX
-		StrCopy(Engine.dataFile[0], "Data.rsdk");
-#else
-        StrCopy(Engine.dataFile[0], "ForceData.rsdk");
-#endif
+        if (!ini.GetString("Dev", "DataFile", Engine.dataFile[0]))
+        StrCopy(Engine.dataFile[0], "Data.rsdk");
+		
+		
+        //if (!StrComp(Engine.dataFile[1], "")) {
+            if (!ini.GetString("Dev", "DataFile2", Engine.dataFile[1]))
+                StrCopy(Engine.dataFile[1], "Data.rsdk.xmf");
+        //}
 		
 		/*
-        if (!StrComp(Engine.dataFile[1], "")) {
-            if (!ini.GetString("Dev", "DataFile2", Engine.dataFile[1]))
-                StrCopy(Engine.dataFile[1], "");
-        }
         if (!StrComp(Engine.dataFile[2], "")) {
             if (!ini.GetString("Dev", "DataFile3", Engine.dataFile[2]))
                 StrCopy(Engine.dataFile[2], "");
@@ -692,14 +693,14 @@ void WriteSettings()
         "Determines if applicable rendering modes (such as 3D floor from special stages) will render in \"High Quality\" mode or standard mode");
     ini.SetBool("Dev", "UseHQModes", Engine.useHQModes);
 
-    //ini.SetComment("Dev", "DataFileComment", "Determines where the first RSDK file will be loaded from");
-    //ini.SetString("Dev", "DataFile", Engine.dataFile[0]);
+    ini.SetComment("Dev", "DataFileComment", "Determines where the first RSDK file will be loaded from");
+    ini.SetString("Dev", "DataFile", Engine.dataFile[0]);
+	
+	
+    ini.SetComment("Dev", "DataFileComment2", "Determines where the second RSDK file will be loaded from");
+    ini.SetString("Dev", "DataFile2", Engine.dataFile[1]);
 	
 	/*
-    if (!StrComp(Engine.dataFile[1], "")) {
-        ini.SetComment("Dev", "DataFileComment2", "Determines where the second RSDK file will be loaded from");
-        ini.SetString("Dev", "DataFile2", Engine.dataFile[1]);
-    }
     if (!StrComp(Engine.dataFile[2], "")) {
         ini.SetComment("Dev", "DataFileComment3", "Determines where the third RSDK file will be loaded from (normally unused)");
         ini.SetString("Dev", "DataFile3", Engine.dataFile[2]);
