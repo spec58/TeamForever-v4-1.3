@@ -113,7 +113,7 @@ void InitMods()
 
                     if (flag) {
                         if (LoadMod(&info, modPath.string(), modDirPath.filename().string(), false))
-                            modList.push_back(info);
+                            modList.insert(modList.begin(), info);
                     }
                 }
             }
