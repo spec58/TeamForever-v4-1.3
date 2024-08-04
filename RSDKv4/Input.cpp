@@ -32,6 +32,8 @@ int lastMouseY     = 0;
 
 struct InputDevice {
 #if RETRO_USING_SDL2
+    // we need the controller index reported from SDL2's controller added event
+    int index;
     SDL_GameController *devicePtr;
     SDL_Haptic *hapticPtr;
 #endif
@@ -207,7 +209,7 @@ bool getControllerButton(byte buttonID)
 }
 #endif //! RETRO_USING_SDL2
 
-void controllerInit(byte controllerID)
+void controllerInit(int controllerID) // controllerID = SDL2 controller index
 {
     for (int i = 0; i < controllers.size(); ++i) {
         if (controllers[i].id == controllerID) {
@@ -219,7 +221,8 @@ void controllerInit(byte controllerID)
     SDL_GameController *controller = SDL_GameControllerOpen(controllerID);
     if (controller) {
         InputDevice device;
-        device.id        = 0;
+        device.id        = controllerID;
+        device.index     = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(controller));
         device.devicePtr = controller;
         device.hapticPtr = SDL_HapticOpenFromJoystick(SDL_GameControllerGetJoystick(controller));
         if (device.hapticPtr == NULL) {
@@ -240,22 +243,29 @@ void controllerInit(byte controllerID)
 #endif
 }
 
-void controllerClose(byte controllerID)
+void controllerClose(int controllerID) // controllerID = SDL2 controller id
 {
 #if RETRO_USING_SDL2
     SDL_GameController *controller = SDL_GameControllerFromInstanceID(controllerID);
     if (controller) {
         SDL_GameControllerClose(controller);
 #endif
-        for (int i = 0; i < controllers.size(); ++i) {
-            if (controllers[i].id == controllerID) {
-                controllers.erase(controllers.begin() + controllerID);
+        // ok; when compiling under msvc, this code crashes with the controllers.erase() call (when the controllers vector is 1 element long)
+        // why? i'm under the impression that it's some msvc bug to do with the vector length being 1
+        // i've really got no idea, this code compiles and works fine under linux (gcc), so i suspect it must be an msvc fault (as always lmao)
+        if (controllers.size() == 1) {
+            controllers.clear();
+        } else {
+            for (int i = 0; i < controllers.size(); ++i) {
+                if (controllers[i].index == controllerID) {
+                    controllers.erase(controllers.begin() + i);
 #if RETRO_USING_SDL2
-                if (controllers[i].hapticPtr) {
-                    SDL_HapticClose(controllers[i].hapticPtr);
-                }
+                    if (controllers[i].hapticPtr) {
+                        SDL_HapticClose(controllers[i].hapticPtr);
+                    }
 #endif
-                break;
+                    break;
+                }
             }
         }
 #if RETRO_USING_SDL2
@@ -274,7 +284,7 @@ void InitInputDevices()
     SDL_GameControllerAddMapping("53776974636820436f6e74726f6c6c65,Switch Controller,a:b0,b:b1,back:b11,dpdown:b15,dpleft:b12,dpright:b14,dpup:b13,leftshoulder:b6,leftstick:b4,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b7,rightstick:b5,righttrigger:b9,rightx:a2,righty:a3,start:b10,x:b3,y:b2,");
 #endif
     PrintLog("Initializing gamepads...");
-	
+
     // fix for issue #334 on github, not sure what's going wrong, but it seems to not be initializing the gamepad api maybe?
     SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER);
 
@@ -293,6 +303,7 @@ void InitInputDevices()
         SDL_GameController *gamepad = SDL_GameControllerOpen(i);
         InputDevice device;
         device.id        = 0;
+        device.index     = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(gamepad));
         device.devicePtr = gamepad;
 
         if (SDL_GameControllerGetAttached(gamepad))
