@@ -65,8 +65,13 @@ bool processEvents()
                     case SDL_WINDOWEVENT_FOCUS_GAINED: Engine.hasFocus = true; break;
                 }
                 break;
+            // TODO!!!!:
+            // Due to a design choice in SDL2, the `which` that the controller added event reports is different to the `which` that the controller removed
+            // event reports. controller added event reports back the index for `which`, whereas the device removed event `which` reports the controllerID
+            // this is fixed in SDL3, but for now we'll just hack around it.
             case SDL_CONTROLLERDEVICEADDED: controllerInit(Engine.sdlEvents.cdevice.which); break;
             case SDL_CONTROLLERDEVICEREMOVED: controllerClose(Engine.sdlEvents.cdevice.which); break;
+            // ---
             case SDL_APP_WILLENTERBACKGROUND:
 				/*
                 if (Engine.gameMode == ENGINE_MAINGAME && !(disableFocusPause & 1))
