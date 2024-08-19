@@ -47,6 +47,7 @@ SDL_AudioSpec audioDeviceFormat;
 
 int InitAudioPlayback()
 {
+    SDL_Init(SDL_INIT_AUDIO); // Needed for audio on TSP
     StopAllSfx(); //"init"
 
 #if !RETRO_USE_ORIGINAL_CODE

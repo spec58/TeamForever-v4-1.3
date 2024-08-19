@@ -11,6 +11,10 @@ STRIP		?= strip
 
 # -fsigned-char required to prevent hang in LoadStageCollisions
 CFLAGS		?= -fsigned-char -std=c++17
+LIBS        += -lstdc++fs
+
+# TSP Optimizations
+#CFLAGS      += -mtune=cortex-a53 -mcpu=cortex-a53
 
 # =============================================================================
 # Detect default platform if not explicitly specified
